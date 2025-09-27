@@ -1,8 +1,23 @@
 {
-  "name": "interview-position-tracker-frontend",
+  "name": "job-search-tracker-frontend",
   "version": "1.0.0",
-  "description": "Frontend for Interview Position Tracker API",
+  "description": "Modern React TypeScript frontend for Job Search Tracker - A comprehensive application for managing job applications and interview processes",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haim9798/job-search-tracker-frontend.git"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "job-search",
+    "interview-tracker",
+    "frontend",
+    "tailwindcss",
+    "fastapi"
+  ],
+  "author": "Haim",
+  "license": "MIT",
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
