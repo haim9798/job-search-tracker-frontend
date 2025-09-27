@@ -60,5 +60,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:3000/ || exit 1
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx with PID file in a writable location for non-root user
+CMD ["nginx", "-g", "pid /var/run/nginx/nginx.pid; daemon off;"]
