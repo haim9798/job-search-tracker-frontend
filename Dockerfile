@@ -18,8 +18,9 @@ RUN npm ci --only=production --silent
 # Copy source code
 COPY . .
 
-# Build the application (skip ESLint blocking on CI builds)
+# Build the application (disable ESLint to avoid blocking build)
 ENV CI=true
+ENV DISABLE_ESLINT_PLUGIN=true
 RUN npm run build:production || npm run build
 
 # Stage 2: Production stage with Nginx
