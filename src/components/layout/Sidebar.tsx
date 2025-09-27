@@ -183,8 +183,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               v1.0.0
             </div>
           </div>
-        </aside>
-      </div>
+        </div>
+      </aside>
     </>
   );
 };

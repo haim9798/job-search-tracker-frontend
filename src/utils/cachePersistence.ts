@@ -1,3 +1,4 @@
+import React from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import { CacheManager } from './cacheManager';
 
@@ -418,6 +419,3 @@ export const useCachePersistence = (queryClient: QueryClient) => {
     setConfig,
   };
 };
-
-// Export React import for the hook
-import React from 'react';

@@ -1,3 +1,4 @@
+import React from 'react';
 import { CacheManager } from './cacheManager';
 
 // Offline queue item interface
@@ -277,6 +278,3 @@ export const useOfflineQueue = () => {
 if (typeof window !== 'undefined') {
   OfflineQueue.initialize();
 }
-
-// Export React import for the hook
-import React from 'react';
