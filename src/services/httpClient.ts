@@ -8,7 +8,7 @@ import { retryApiCall, defaultRetryConfig } from '../utils/retryMechanism';
 
 // Create axios instance with base configuration
 const createHttpClient = (): AxiosInstance => {
-  const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.REACT_APP_API_URL || 'https://localhost';
   
   const client = axios.create({
     baseURL,
