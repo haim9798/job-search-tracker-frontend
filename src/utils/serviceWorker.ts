@@ -43,7 +43,7 @@ class ServiceWorkerManager {
   }
 
   private showUpdateNotification(): void {
-    if (confirm('A new version of the app is available. Would you like to update?')) {
+    if (window.confirm('A new version of the app is available. Would you like to update?')) {
       this.workbox?.messageSkipWaiting();
     }
   }

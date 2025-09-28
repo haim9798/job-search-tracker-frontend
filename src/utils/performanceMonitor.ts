@@ -457,9 +457,9 @@ export const measurePerformance = (name: string, type: PerformanceEntry['type'] 
 };
 
 // Initialize performance monitoring when module loads
+// Export React import for the hook
+import React from 'react';
+
 if (typeof window !== 'undefined') {
   PerformanceMonitor.initialize();
 }
-
-// Export React import for the hook
-import React from 'react';
