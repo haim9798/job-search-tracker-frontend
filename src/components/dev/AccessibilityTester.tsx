@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { runAccessibilityTests, generateAccessibilityReport } from '../../utils/accessibility';
+import { generateAccessibilityReport } from '../../utils/accessibility';
 import { Button } from '../ui/Button';
 
 export const AccessibilityTester: React.FC = () => {
