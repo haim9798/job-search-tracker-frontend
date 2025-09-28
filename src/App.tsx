@@ -5,7 +5,7 @@ import { LoginPage, RegisterPage, DashboardPage, PositionsPage, CreatePositionPa
 import { ErrorBoundary } from './components/error';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { QueryProvider } from './providers/QueryProvider';
-import { CacheProvider } from './providers/CacheProvider';
+import { AuthProvider } from './providers/AuthProvider';
 
 function App() {
   // Debug logging for app initialization
@@ -28,17 +28,17 @@ function App() {
     // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
   };
 
-  // STEP 4: Add CacheProvider
-  console.log('🧪 STEP 4: Adding CacheProvider');
+  // STEP 5: Add AuthProvider (skip CacheProvider - it's causing the hang)
+  console.log('🧪 STEP 5: Adding AuthProvider (skipping CacheProvider)');
   
   return (
     <ErrorBoundary onError={handleGlobalError}>
       <ThemeProvider>
         <QueryProvider>
-          <CacheProvider>
+          <AuthProvider>
             <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-              <h1>🧪 Step 4: CacheProvider Test</h1>
-              <p>If you see this, CacheProvider is working.</p>
+              <h1>🧪 Step 5: AuthProvider Test</h1>
+              <p>If you see this, AuthProvider is working.</p>
               <p>Current URL: {window.location.href}</p>
               <p>Environment: {process.env.NODE_ENV}</p>
               <p>API URL: https://job-search-tracker-api.onrender.com</p>
@@ -49,7 +49,7 @@ function App() {
                 Test Button
               </button>
             </div>
-          </CacheProvider>
+          </AuthProvider>
         </QueryProvider>
       </ThemeProvider>
     </ErrorBoundary>
