@@ -25,23 +25,25 @@ function App() {
     // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
   };
 
-  // MINIMAL TEST: Return simple HTML without providers
-  console.log('🧪 MINIMAL TEST: Returning simple HTML without providers');
+  // STEP 1: Add ErrorBoundary back
+  console.log('🧪 STEP 1: Adding ErrorBoundary back');
   
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>🧪 Minimal Test App</h1>
-      <p>If you see this, the basic React app is working.</p>
-      <p>Current URL: {window.location.href}</p>
-      <p>Environment: {process.env.NODE_ENV}</p>
-      <p>API URL: https://job-search-tracker-api.onrender.com</p>
-      <button onClick={() => {
-        console.log('Button clicked!');
-        alert('Button works!');
-      }}>
-        Test Button
-      </button>
-    </div>
+    <ErrorBoundary onError={handleGlobalError}>
+      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <h1>🧪 Step 1: ErrorBoundary Test</h1>
+        <p>If you see this, ErrorBoundary is working.</p>
+        <p>Current URL: {window.location.href}</p>
+        <p>Environment: {process.env.NODE_ENV}</p>
+        <p>API URL: https://job-search-tracker-api.onrender.com</p>
+        <button onClick={() => {
+          console.log('Button clicked!');
+          alert('Button works!');
+        }}>
+          Test Button
+        </button>
+      </div>
+    </ErrorBoundary>
   );
 }
 
