@@ -8,12 +8,13 @@ import { retryApiCall, defaultRetryConfig } from '../utils/retryMechanism';
 
 // Create axios instance with base configuration
 const createHttpClient = (): AxiosInstance => {
-  const baseURL = process.env.REACT_APP_API_URL || 'https://localhost';
+  // WORKAROUND: Hardcode API URL to test environment variable issue
+  const baseURL = 'https://job-search-tracker-api.onrender.com';
   
   // Debug logging
-  console.log('🔧 HTTP Client Configuration:');
+  console.log('🔧 HTTP Client Configuration (HARDCODED):');
   console.log('  REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
-  console.log('  Final baseURL:', baseURL);
+  console.log('  Final baseURL (HARDCODED):', baseURL);
   console.log('  Environment:', process.env.NODE_ENV);
   console.log('  All env vars starting with REACT_APP_:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
   

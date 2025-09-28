@@ -36,7 +36,8 @@ class ConfigManager {
     
     const config = {
       env,
-      apiUrl: process.env.REACT_APP_API_URL || 'https://localhost',
+      // WORKAROUND: Hardcode API URL to test environment variable issue
+      apiUrl: 'https://job-search-tracker-api.onrender.com',
       appName: process.env.REACT_APP_APP_NAME || 'Interview Position Tracker',
       version: process.env.REACT_APP_VERSION || '1.0.0',
       debug: process.env.REACT_APP_DEBUG === 'true',
