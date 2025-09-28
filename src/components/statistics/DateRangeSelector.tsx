@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { Button } from '../ui/Button';
-import { DateRangePicker } from '../ui/DateRangePicker';
-
-interface DateRange {
-  from: string;
-  to: string;
-}
+import { DateRangePicker, DateRange } from '../ui/DateRangePicker';
 
 interface DateRangeSelectorProps {
   value: DateRange;
@@ -24,8 +19,8 @@ const PRESET_RANGES = [
       const start = new Date();
       start.setDate(start.getDate() - 7);
       return {
-        from: start.toISOString().split('T')[0] || '',
-        to: end.toISOString().split('T')[0] || '',
+        from: start.toISOString().split('T')[0],
+        to: end.toISOString().split('T')[0],
       };
     },
   },
@@ -36,8 +31,8 @@ const PRESET_RANGES = [
       const start = new Date();
       start.setDate(start.getDate() - 30);
       return {
-        from: start.toISOString().split('T')[0] || '',
-        to: end.toISOString().split('T')[0] || '',
+        from: start.toISOString().split('T')[0],
+        to: end.toISOString().split('T')[0],
       };
     },
   },
@@ -48,8 +43,8 @@ const PRESET_RANGES = [
       const start = new Date();
       start.setDate(start.getDate() - 90);
       return {
-        from: start.toISOString().split('T')[0] || '',
-        to: end.toISOString().split('T')[0] || '',
+        from: start.toISOString().split('T')[0],
+        to: end.toISOString().split('T')[0],
       };
     },
   },
@@ -60,8 +55,8 @@ const PRESET_RANGES = [
       const start = new Date(now.getFullYear(), 0, 1);
       const end = new Date();
       return {
-        from: start.toISOString().split('T')[0] || '',
-        to: end.toISOString().split('T')[0] || '',
+        from: start.toISOString().split('T')[0],
+        to: end.toISOString().split('T')[0],
       };
     },
   },
@@ -72,8 +67,8 @@ const PRESET_RANGES = [
       const start = new Date(now.getFullYear() - 1, 0, 1);
       const end = new Date(now.getFullYear() - 1, 11, 31);
       return {
-        from: start.toISOString().split('T')[0] || '',
-        to: end.toISOString().split('T')[0] || '',
+        from: start.toISOString().split('T')[0],
+        to: end.toISOString().split('T')[0],
       };
     },
   },
@@ -90,7 +85,10 @@ export const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({
 
   const handlePresetSelect = (preset: typeof PRESET_RANGES[0]) => {
     const range = preset.getValue();
-    onChange(range);
+    onChange({
+      ...(range.from && { from: range.from }),
+      ...(range.to && { to: range.to }),
+    });
   };
 
   const formatDateRange = (range: DateRange) => {

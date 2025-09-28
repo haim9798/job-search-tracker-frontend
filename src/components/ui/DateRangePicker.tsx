@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   CalendarIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { Button, Input } from './';

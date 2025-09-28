@@ -54,12 +54,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     let isDragging = false;
 
     const handleTouchStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX;
-      isDragging = true;
+      if (e.touches[0]) {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isDragging) return;
+      if (!isDragging || !e.touches[0]) return;
       currentX = e.touches[0].clientX;
       
       // Prevent default scrolling when swiping from edge

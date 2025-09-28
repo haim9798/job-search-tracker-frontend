@@ -115,12 +115,14 @@ export const InterviewOutcomeChart: React.FC<InterviewOutcomeChartProps> = ({
         },
       },
     },
-    onClick: (event, elements) => {
-      if (onDrillDown && elements.length > 0) {
+    onClick: (_, elements) => {
+      if (onDrillDown && elements.length > 0 && elements[0]) {
         const elementIndex = elements[0].index;
         const outcome = orderedOutcomes[elementIndex];
-        const label = OUTCOME_LABELS[outcome];
-        onDrillDown(outcome, label);
+        if (outcome && OUTCOME_LABELS[outcome]) {
+          const label = OUTCOME_LABELS[outcome];
+          onDrillDown(outcome, label);
+        }
       }
     },
   };

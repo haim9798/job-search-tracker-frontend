@@ -101,7 +101,7 @@ export const PositionStatusChart: React.FC<PositionStatusChartProps> = ({
             size: 12,
           },
         },
-        onClick: (event, legendItem) => {
+        onClick: (_, legendItem) => {
           if (onDrillDown && legendItem.text) {
             const statusKey = Object.keys(STATUS_LABELS).find(
               key => STATUS_LABELS[key as PositionStatus] === legendItem.text
@@ -125,12 +125,15 @@ export const PositionStatusChart: React.FC<PositionStatusChartProps> = ({
       },
     },
     cutout: '60%',
-    onClick: (event, elements) => {
-      if (onDrillDown && elements.length > 0) {
+    onClick: (_, elements) => {
+      if (onDrillDown && elements.length > 0 && elements[0]) {
         const elementIndex = elements[0].index;
-        const statusKey = filteredData[elementIndex][0];
-        const label = STATUS_LABELS[statusKey as PositionStatus];
-        onDrillDown(statusKey, label);
+        const dataEntry = filteredData[elementIndex];
+        if (dataEntry) {
+          const statusKey = dataEntry[0];
+          const label = STATUS_LABELS[statusKey as PositionStatus];
+          onDrillDown(statusKey, label);
+        }
       }
     },
   };

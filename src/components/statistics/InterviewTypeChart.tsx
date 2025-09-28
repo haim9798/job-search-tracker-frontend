@@ -110,12 +110,15 @@ export const InterviewTypeChart: React.FC<InterviewTypeChartProps> = ({
         },
       },
     },
-    onClick: (event, elements) => {
-      if (onDrillDown && elements.length > 0) {
+    onClick: (_, elements) => {
+      if (onDrillDown && elements.length > 0 && elements[0]) {
         const elementIndex = elements[0].index;
-        const typeKey = filteredData[elementIndex][0];
-        const label = TYPE_LABELS[typeKey as InterviewType];
-        onDrillDown(typeKey, label);
+        const dataEntry = filteredData[elementIndex];
+        if (dataEntry) {
+          const typeKey = dataEntry[0];
+          const label = TYPE_LABELS[typeKey as InterviewType];
+          onDrillDown(typeKey, label);
+        }
       }
     },
   };

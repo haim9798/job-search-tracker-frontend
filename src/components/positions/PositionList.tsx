@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlusIcon, PencilIcon, TrashIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, PencilIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { Position, PositionFilters } from '../../types';
 import { Button } from '../ui';
 import { SwipeableCard } from '../ui/SwipeableCard';

@@ -45,7 +45,6 @@ const VIEW_MODES = [
 
 export const ResponsiveStatisticsLayout: React.FC<ResponsiveStatisticsLayoutProps> = ({
   children,
-  onFilterChange,
   onExport,
   isLoading = false,
 }) => {

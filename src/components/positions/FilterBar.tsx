@@ -4,7 +4,6 @@ import {
   MagnifyingGlassIcon,
   FunnelIcon,
   XMarkIcon,
-  CalendarIcon,
   BuildingOfficeIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
@@ -175,7 +174,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     downloadFiltersAsFile(filters, undefined, {
       name: 'Position Filters',
       description: filterDescription,
-      resultCount,
+      resultCount: resultCount || 0,
       exportedBy: 'Interview Position Tracker',
     });
   };
@@ -303,8 +302,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </label>
               <DateRangePicker
                 value={{
-                  from: filters.date_from,
-                  to: filters.date_to,
+                  ...(filters.date_from && { from: filters.date_from }),
+                  ...(filters.date_to && { to: filters.date_to }),
                 }}
                 onChange={handleDateRangeChange}
                 disabled={loading}
@@ -327,16 +326,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 </Button>
                 
                 <label className="cursor-pointer">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    disabled={loading}
-                    className="text-gray-600 hover:text-gray-800"
-                    as="span"
-                  >
+                  <span className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-800 cursor-pointer">
                     <ArrowUpTrayIcon className="h-4 w-4 mr-1" />
                     Import
-                  </Button>
+                  </span>
                   <input
                     type="file"
                     accept=".json"

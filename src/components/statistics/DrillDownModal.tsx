@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { 
-  XMarkIcon,
-  ChevronLeftIcon,
   BuildingOfficeIcon,
-  BriefcaseIcon,
-  ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline';
 import { statisticsService } from '../../services';
 import { PositionStatus, InterviewOutcome, InterviewType } from '../../types';

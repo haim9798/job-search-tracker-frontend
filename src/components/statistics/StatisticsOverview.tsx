@@ -13,7 +13,7 @@ import { DrillDownModal } from './DrillDownModal';
 import { ResponsiveStatisticsLayout } from './ResponsiveStatisticsLayout';
 
 export const StatisticsOverview: React.FC = () => {
-  const [dateRange, setDateRange] = useState<{ from: string; to: string }>({
+  const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>({
     from: '',
     to: '',
   });
@@ -31,7 +31,7 @@ export const StatisticsOverview: React.FC = () => {
 
   // Use filtered data if date range is selected, otherwise use default
   const defaultData = useAnalyticsDashboard();
-  const filteredData = useStatsByDateRange(dateRange.from, dateRange.to);
+  const filteredData = useStatsByDateRange(dateRange.from || '', dateRange.to || '');
   
   const isUsingDateFilter = dateRange.from && dateRange.to;
   const { overview, successRates, monthlyStats, topCompanies, isLoading, error } = 
@@ -118,9 +118,11 @@ export const StatisticsOverview: React.FC = () => {
                 onReset={handleDateRangeReset}
                 isLoading={isLoading}
               />
-              <StatisticsExport
-                dateRange={dateRange.from && dateRange.to ? dateRange : undefined}
-              />
+              {dateRange.from && dateRange.to && (
+                <StatisticsExport
+                  dateRange={{ from: dateRange.from, to: dateRange.to }}
+                />
+              )}
               <Button
                 onClick={handleRefresh}
                 variant="secondary"
@@ -138,7 +140,7 @@ export const StatisticsOverview: React.FC = () => {
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-blue-800">
-                  Showing data from {new Date(dateRange.from).toLocaleDateString()} to {new Date(dateRange.to).toLocaleDateString()}
+                  Showing data from {dateRange.from && new Date(dateRange.from).toLocaleDateString()} to {dateRange.to && new Date(dateRange.to).toLocaleDateString()}
                 </div>
                 <Button
                   variant="ghost"

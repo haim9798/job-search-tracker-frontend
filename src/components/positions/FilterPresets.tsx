@@ -52,7 +52,7 @@ const DEFAULT_PRESETS: FilterPreset[] = [
     name: 'Recent Applications',
     filters: {
       date_from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Last 7 days
-    },
+    } as PositionFilters,
     isDefault: true,
     created_at: new Date().toISOString(),
     usage_count: 0,

@@ -12,8 +12,8 @@ import { toast } from 'react-hot-toast';
 
 interface StatisticsExportProps {
   dateRange?: {
-    from: string;
-    to: string;
+    from?: string;
+    to?: string;
   };
   filters?: {
     companies?: string[];

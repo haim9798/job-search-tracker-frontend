@@ -10,7 +10,7 @@ interface FeatureErrorBoundaryProps {
 }
 
 // Feature-specific error fallback components
-const PositionErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError, retry }) => (
+const PositionErrorFallback: React.FC<ErrorFallbackProps> = ({ resetError, retry }) => (
   <div className="bg-white rounded-lg shadow p-6 text-center">
     <div className="mx-auto h-12 w-12 text-red-500 mb-4">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@ const PositionErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError
   </div>
 );
 
-const InterviewErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError, retry }) => (
+const InterviewErrorFallback: React.FC<ErrorFallbackProps> = ({ resetError, retry }) => (
   <div className="bg-white rounded-lg border border-red-200 p-4 text-center">
     <div className="mx-auto h-8 w-8 text-red-500 mb-2">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@ const InterviewErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErro
   </div>
 );
 
-const StatisticsErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError, retry }) => (
+const StatisticsErrorFallback: React.FC<ErrorFallbackProps> = ({ resetError, retry }) => (
   <div className="bg-white rounded-lg shadow p-6 text-center">
     <div className="mx-auto h-12 w-12 text-red-500 mb-4">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@ const StatisticsErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErr
   </div>
 );
 
-const FormErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError, retry }) => (
+const FormErrorFallback: React.FC<ErrorFallbackProps> = ({ resetError, retry }) => (
   <div className="bg-red-50 border border-red-200 rounded-md p-4">
     <div className="flex">
       <div className="flex-shrink-0">
@@ -148,7 +148,7 @@ const FeatureErrorBoundary: React.FC<FeatureErrorBoundaryProps> = ({
       case 'form':
         return FormErrorFallback;
       default:
-        return undefined; // Will use default fallback
+        return PositionErrorFallback; // Default fallback
     }
   };
 
@@ -169,7 +169,7 @@ const FeatureErrorBoundary: React.FC<FeatureErrorBoundaryProps> = ({
     <ErrorBoundary 
       fallback={getFallbackComponent(feature)}
       onError={handleError}
-      resetKeys={resetKeys}
+      resetKeys={resetKeys || []}
       resetOnPropsChange={true}
     >
       {children}
