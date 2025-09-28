@@ -5,6 +5,13 @@ import { LoginPage, RegisterPage, DashboardPage, PositionsPage, CreatePositionPa
 import { ErrorBoundary } from './components/error';
 
 function App() {
+  // Debug logging for app initialization
+  console.log('🚀 App Component Initializing...');
+  console.log('  Current URL:', window.location.href);
+  console.log('  User Agent:', navigator.userAgent);
+  console.log('  All process.env keys:', Object.keys(process.env));
+  console.log('  REACT_APP_* env vars:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
+  
   const handleGlobalError = (error: Error, errorInfo: React.ErrorInfo) => {
     // Log to console in development
     console.error('Global error caught:', error, errorInfo);

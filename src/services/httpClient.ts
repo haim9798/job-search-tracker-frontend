@@ -10,6 +10,13 @@ import { retryApiCall, defaultRetryConfig } from '../utils/retryMechanism';
 const createHttpClient = (): AxiosInstance => {
   const baseURL = process.env.REACT_APP_API_URL || 'https://localhost';
   
+  // Debug logging
+  console.log('🔧 HTTP Client Configuration:');
+  console.log('  REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+  console.log('  Final baseURL:', baseURL);
+  console.log('  Environment:', process.env.NODE_ENV);
+  console.log('  All env vars starting with REACT_APP_:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
+  
   const client = axios.create({
     baseURL,
     timeout: 10000,
@@ -21,9 +28,21 @@ const createHttpClient = (): AxiosInstance => {
   // Request interceptor for authentication and performance tracking
   client.interceptors.request.use(
     (config) => {
+      // Debug logging for each request
+      console.log('🌐 API Request:', {
+        method: config.method?.toUpperCase(),
+        url: config.url,
+        baseURL: config.baseURL,
+        fullURL: `${config.baseURL}${config.url}`,
+        headers: config.headers,
+      });
+      
       const authHeader = tokenManager.getAuthHeader();
       if (authHeader) {
         config.headers.Authorization = authHeader;
+        console.log('🔐 Auth header added:', authHeader.substring(0, 20) + '...');
+      } else {
+        console.log('⚠️ No auth header found');
       }
       
       // Add performance tracking metadata
@@ -35,6 +54,7 @@ const createHttpClient = (): AxiosInstance => {
       return config;
     },
     (error) => {
+      console.error('❌ Request interceptor error:', error);
       return Promise.reject(error);
     }
   );
@@ -42,6 +62,15 @@ const createHttpClient = (): AxiosInstance => {
   // Response interceptor for error handling, token refresh, and performance tracking
   client.interceptors.response.use(
     (response: AxiosResponse) => {
+      // Debug logging for successful responses
+      console.log('✅ API Response Success:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.config.url,
+        fullURL: `${response.config.baseURL}${response.config.url}`,
+        data: response.data,
+      });
+      
       // Track successful request performance
       const config = response.config as any;
       if (config.metadata?.startTime && config.metadata?.performanceId) {
@@ -64,6 +93,16 @@ const createHttpClient = (): AxiosInstance => {
       return response;
     },
     async (error: AxiosError) => {
+      // Debug logging for failed responses
+      console.error('❌ API Response Error:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        url: error.config?.url,
+        fullURL: error.config ? `${error.config.baseURL}${error.config.url}` : 'unknown',
+        message: error.message,
+        responseData: error.response?.data,
+      });
+      
       const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean; metadata?: any };
 
       // Track failed request performance

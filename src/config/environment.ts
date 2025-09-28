@@ -24,7 +24,17 @@ class ConfigManager {
   private loadConfig(): AppConfig {
     const env = (process.env.REACT_APP_ENV || 'development') as AppConfig['env'];
     
-    return {
+    // Debug logging
+    console.log('🔧 Environment Configuration:');
+    console.log('  REACT_APP_ENV:', process.env.REACT_APP_ENV);
+    console.log('  REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+    console.log('  REACT_APP_APP_NAME:', process.env.REACT_APP_APP_NAME);
+    console.log('  REACT_APP_VERSION:', process.env.REACT_APP_VERSION);
+    console.log('  REACT_APP_DEBUG:', process.env.REACT_APP_DEBUG);
+    console.log('  REACT_APP_ENVIRONMENT:', process.env.REACT_APP_ENVIRONMENT);
+    console.log('  NODE_ENV:', process.env.NODE_ENV);
+    
+    const config = {
       env,
       apiUrl: process.env.REACT_APP_API_URL || 'https://localhost',
       appName: process.env.REACT_APP_APP_NAME || 'Interview Position Tracker',
@@ -34,6 +44,9 @@ class ConfigManager {
       logLevel: (process.env.REACT_APP_LOG_LEVEL || 'info') as AppConfig['logLevel'],
       generateSourcemap: process.env.GENERATE_SOURCEMAP === 'true',
     };
+    
+    console.log('🔧 Final Config:', config);
+    return config;
   }
 
   public get<K extends keyof AppConfig>(key: K): AppConfig[K] {
