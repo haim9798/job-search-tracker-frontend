@@ -13,14 +13,9 @@ class AuthService {
    * Login user with email and password
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const formData = new FormData();
-    formData.append('username', credentials.email);
-    formData.append('password', credentials.password);
-
-    const response = await apiRequest.post<AuthResponse>('/api/v1/auth/login', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+    const response = await apiRequest.post<AuthResponse>('/api/v1/auth/login', {
+      email: credentials.email,
+      password: credentials.password,
     });
 
     // Store tokens and user data
