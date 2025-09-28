@@ -2,6 +2,8 @@ import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { ApiError } from '../types';
 
+console.log('📊 QueryClient module loading...');
+
 // Cache configuration for different data types
 export const cacheConfigs = {
   // Frequently changing data
@@ -105,6 +107,8 @@ export const queryClient = new QueryClient({
     },
   }),
 });
+
+console.log('📊 QueryClient created successfully');
 
 // Query key factory for consistent key generation
 export const queryKeys = {

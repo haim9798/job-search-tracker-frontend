@@ -8,14 +8,21 @@ interface QueryProviderProps {
 }
 
 export const QueryProvider: React.FC<QueryProviderProps> = ({ children }) => {
+  console.log('📊 QueryProvider starting...');
+  
   // Set up background sync when provider mounts
   React.useEffect(() => {
+    console.log('📊 QueryProvider setting up background sync...');
     const cleanup = backgroundSync.start();
+    console.log('📊 QueryProvider background sync started');
     return cleanup;
   }, []);
 
+  console.log('📊 QueryProvider rendering...');
+  
   return (
     <QueryClientProvider client={queryClient}>
+      {console.log('📊 QueryProvider children rendering')}
       {children}
       {/* Show React Query DevTools in development */}
       {process.env.NODE_ENV === 'development' && (

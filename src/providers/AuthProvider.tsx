@@ -44,11 +44,15 @@ interface AuthProviderProps {
 const TOKEN_REFRESH_INTERVAL = 15 * 60 * 1000;
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  console.log('🔐 AuthProvider component starting...');
+  
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
+  
+  console.log('🔐 AuthProvider state initialized');
 
   // Computed state
   const isAuthenticated = !!user && authService.isAuthenticated();
@@ -325,8 +329,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     restoreSession,
   };
 
+  console.log('🔐 AuthProvider rendering with context value:', contextValue);
+  
   return (
     <AuthContext.Provider value={contextValue}>
+      {console.log('🔐 AuthProvider children rendering')}
       {children}
     </AuthContext.Provider>
   );
