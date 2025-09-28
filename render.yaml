@@ -1,0 +1,17 @@
+# Render deployment configuration for frontend
+# This file should be placed in the root of your frontend repository
+
+# Build command
+buildCommand: |
+  npm ci
+  CI=true DISABLE_ESLINT_PLUGIN=true TSC_COMPILE_ON_ERROR=true npm run build:production
+
+# Static site settings
+staticPublishPath: build
+
+# Environment variables (set these in Render dashboard)
+# REACT_APP_API_URL=https://your-backend-domain.onrender.com
+# REACT_APP_ENVIRONMENT=production
+
+# Auto-deploy from main branch
+autoDeploy: true
