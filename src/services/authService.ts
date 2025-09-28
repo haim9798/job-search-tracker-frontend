@@ -17,7 +17,7 @@ class AuthService {
     formData.append('username', credentials.email);
     formData.append('password', credentials.password);
 
-    const response = await apiRequest.post<AuthResponse>('/auth/login', formData, {
+    const response = await apiRequest.post<AuthResponse>('/api/v1/auth/login', formData, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -35,7 +35,7 @@ class AuthService {
   async register(userData: RegisterData): Promise<User> {
     const { confirmPassword, ...registrationData } = userData;
     
-    const response = await apiRequest.post<User>('/auth/register', registrationData);
+    const response = await apiRequest.post<User>('/api/v1/auth/register', registrationData);
     return response;
   }
 
@@ -45,7 +45,7 @@ class AuthService {
   async logout(): Promise<void> {
     try {
       // Call logout endpoint if it exists
-      await apiRequest.post('/auth/logout');
+      await apiRequest.post('/api/v1/auth/logout');
     } catch (error) {
       // Continue with logout even if API call fails
       console.warn('Logout API call failed:', error);
@@ -59,7 +59,7 @@ class AuthService {
    * Get current authenticated user
    */
   async getCurrentUser(): Promise<User> {
-    const response = await apiRequest.get<User>('/auth/me');
+    const response = await apiRequest.get<User>('/api/v1/auth/me');
     
     // Update stored user data
     tokenManager.setUser(response);
@@ -77,7 +77,7 @@ class AuthService {
       throw new Error('No refresh token available');
     }
 
-    const response = await apiRequest.post<TokenRefreshResponse>('/auth/refresh', {
+    const response = await apiRequest.post<TokenRefreshResponse>('/api/v1/auth/refresh', {
       refresh_token: refreshToken,
     });
 
@@ -117,14 +117,14 @@ class AuthService {
    * Request password reset
    */
   async requestPasswordReset(email: string): Promise<void> {
-    await apiRequest.post('/auth/password-reset-request', { email });
+    await apiRequest.post('/api/v1/auth/password-reset-request', { email });
   }
 
   /**
    * Reset password with token
    */
   async resetPassword(token: string, newPassword: string): Promise<void> {
-    await apiRequest.post('/auth/password-reset', {
+    await apiRequest.post('/api/v1/auth/password-reset', {
       token,
       new_password: newPassword,
     });
@@ -134,7 +134,7 @@ class AuthService {
    * Change password for authenticated user
    */
   async changePassword(currentPassword: string, newPassword: string): Promise<void> {
-    await apiRequest.post('/auth/change-password', {
+    await apiRequest.post('/api/v1/auth/change-password', {
       current_password: currentPassword,
       new_password: newPassword,
     });

@@ -12,7 +12,7 @@ class InterviewService {
    * Get all interviews for a specific position
    */
   async getInterviews(positionId: string): Promise<Interview[]> {
-    const response = await apiRequest.get<InterviewListResponse>(`/positions/${positionId}/interviews`);
+    const response = await apiRequest.get<InterviewListResponse>(`/api/v1/positions/${positionId}/interviews`);
     return response.interviews;
   }
 
@@ -20,35 +20,35 @@ class InterviewService {
    * Get a single interview by ID
    */
   async getInterview(id: string): Promise<Interview> {
-    return apiRequest.get<Interview>(`/interviews/${id}`);
+    return apiRequest.get<Interview>(`/api/v1/interviews/${id}`);
   }
 
   /**
    * Create a new interview
    */
   async createInterview(data: CreateInterviewData): Promise<Interview> {
-    return apiRequest.post<Interview>('/interviews', data);
+    return apiRequest.post<Interview>('/api/v1/interviews', data);
   }
 
   /**
    * Update an existing interview
    */
   async updateInterview(id: string, data: UpdateInterviewData): Promise<Interview> {
-    return apiRequest.put<Interview>(`/interviews/${id}`, data);
+    return apiRequest.put<Interview>(`/api/v1/interviews/${id}`, data);
   }
 
   /**
    * Partially update an interview (PATCH)
    */
   async patchInterview(id: string, data: Partial<UpdateInterviewData>): Promise<Interview> {
-    return apiRequest.patch<Interview>(`/interviews/${id}`, data);
+    return apiRequest.patch<Interview>(`/api/v1/interviews/${id}`, data);
   }
 
   /**
    * Delete an interview
    */
   async deleteInterview(id: string): Promise<void> {
-    return apiRequest.delete<void>(`/interviews/${id}`);
+    return apiRequest.delete<void>(`/api/v1/interviews/${id}`);
   }
 
   /**
@@ -56,7 +56,7 @@ class InterviewService {
    */
   async updateInterviewField(id: string, field: string, value: any): Promise<Interview> {
     const updateData = { [field]: value };
-    return apiRequest.patch<Interview>(`/interviews/${id}`, updateData);
+    return apiRequest.patch<Interview>(`/api/v1/interviews/${id}`, updateData);
   }
 
   /**
@@ -91,7 +91,7 @@ class InterviewService {
    * Get all interviews for the current user (across all positions)
    */
   async getAllUserInterviews(): Promise<Interview[]> {
-    return apiRequest.get<Interview[]>('/interviews');
+    return apiRequest.get<Interview[]>('/api/v1/interviews');
   }
 
   /**

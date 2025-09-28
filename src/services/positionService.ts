@@ -34,7 +34,7 @@ class PositionService {
     }
 
     const queryString = params.toString();
-    const url = queryString ? `/positions?${queryString}` : '/positions';
+    const url = queryString ? `/api/v1/positions?${queryString}` : '/api/v1/positions';
     
     return apiRequest.get<PositionListResponse>(url);
   }
@@ -43,42 +43,42 @@ class PositionService {
    * Get a single position by ID
    */
   async getPosition(id: string): Promise<Position> {
-    return apiRequest.get<Position>(`/positions/${id}`);
+    return apiRequest.get<Position>(`/api/v1/positions/${id}`);
   }
 
   /**
    * Create a new position
    */
   async createPosition(data: CreatePositionData): Promise<Position> {
-    return apiRequest.post<Position>('/positions', data);
+    return apiRequest.post<Position>('/api/v1/positions', data);
   }
 
   /**
    * Update an existing position
    */
   async updatePosition(id: string, data: UpdatePositionData): Promise<Position> {
-    return apiRequest.put<Position>(`/positions/${id}`, data);
+    return apiRequest.put<Position>(`/api/v1/positions/${id}`, data);
   }
 
   /**
    * Partially update a position (PATCH)
    */
   async patchPosition(id: string, data: Partial<UpdatePositionData>): Promise<Position> {
-    return apiRequest.patch<Position>(`/positions/${id}`, data);
+    return apiRequest.patch<Position>(`/api/v1/positions/${id}`, data);
   }
 
   /**
    * Delete a position
    */
   async deletePosition(id: string): Promise<void> {
-    return apiRequest.delete<void>(`/positions/${id}`);
+    return apiRequest.delete<void>(`/api/v1/positions/${id}`);
   }
 
   /**
    * Update position status only
    */
   async updatePositionStatus(id: string, status: string): Promise<Position> {
-    return apiRequest.patch<Position>(`/positions/${id}`, { status });
+    return apiRequest.patch<Position>(`/api/v1/positions/${id}`, { status });
   }
 
   /**

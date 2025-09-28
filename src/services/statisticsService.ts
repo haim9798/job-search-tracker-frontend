@@ -6,7 +6,7 @@ class StatisticsService {
    * Get comprehensive position and interview statistics
    */
   async getOverview(): Promise<PositionStatistics> {
-    return apiRequest.get<PositionStatistics>('/statistics');
+    return apiRequest.get<PositionStatistics>('/api/v1/statistics/overview');
   }
 
   /**
@@ -16,7 +16,7 @@ class StatisticsService {
     total_positions: number;
     positions_by_status: Record<string, number>;
   }> {
-    return apiRequest.get('/statistics/positions');
+    return apiRequest.get('/api/v1/statistics/positions');
   }
 
   /**
@@ -27,7 +27,7 @@ class StatisticsService {
     interviews_by_outcome: Record<string, number>;
     interviews_by_type: Record<string, number>;
   }> {
-    return apiRequest.get('/statistics/interviews');
+    return apiRequest.get('/api/v1/statistics/interviews');
   }
 
   /**
@@ -38,7 +38,7 @@ class StatisticsService {
     position_count: number;
     interview_count: number;
   }>> {
-    return apiRequest.get('/statistics/companies');
+    return apiRequest.get('/api/v1/statistics/companies');
   }
 
   /**
@@ -63,7 +63,7 @@ class StatisticsService {
     offers_received: number;
   }>> {
     const currentYear = year || new Date().getFullYear();
-    return apiRequest.get(`/statistics/monthly/${currentYear}`);
+    return apiRequest.get(`/api/v1/statistics/monthly/${currentYear}`);
   }
 
   /**
@@ -75,7 +75,7 @@ class StatisticsService {
     overall_success_rate: number;
     average_interviews_per_position: number;
   }> {
-    return apiRequest.get('/statistics/success-rates');
+    return apiRequest.get('/api/v1/statistics/success-rates');
   }
 
   /**
@@ -86,7 +86,7 @@ class StatisticsService {
     average_days_to_offer: number;
     average_interview_process_duration: number;
   }> {
-    return apiRequest.get('/statistics/time-metrics');
+    return apiRequest.get('/api/v1/statistics/time-metrics');
   }
 
   /**
@@ -99,7 +99,7 @@ class StatisticsService {
     pending: number;
     cancelled: number;
   }>> {
-    return apiRequest.get('/statistics/interview-trends');
+    return apiRequest.get('/api/v1/statistics/interview-trends');
   }
 
   /**
@@ -111,7 +111,7 @@ class StatisticsService {
     count: number;
     average_days: number;
   }>> {
-    return apiRequest.get('/statistics/status-progression');
+    return apiRequest.get('/api/v1/statistics/status-progression');
   }
 
   /**
@@ -124,7 +124,7 @@ class StatisticsService {
     offers: number;
     success_rate: number;
   }>> {
-    return apiRequest.get(`/statistics/top-companies?limit=${limit}`);
+    return apiRequest.get(`/api/v1/statistics/top-companies?limit=${limit}`);
   }
 
   /**
@@ -136,7 +136,7 @@ class StatisticsService {
     pass_rate: number;
     average_duration: number;
   }>> {
-    return apiRequest.get('/statistics/interview-types');
+    return apiRequest.get('/api/v1/statistics/interview-types');
   }
 
   /**
@@ -149,7 +149,7 @@ class StatisticsService {
     interviews_completed: number;
     offers_received: number;
   }>> {
-    return apiRequest.get('/statistics/weekly-activity');
+    return apiRequest.get('/api/v1/statistics/weekly-activity');
   }
 
   /**
@@ -160,7 +160,7 @@ class StatisticsService {
     applications: number;
     success_rate: number;
   }>> {
-    return apiRequest.get('/statistics/application-sources');
+    return apiRequest.get('/api/v1/statistics/application-sources');
   }
 
   /**
@@ -175,7 +175,7 @@ class StatisticsService {
       success_rate: number;
     }>;
   }> {
-    return apiRequest.get('/statistics/salary-analysis');
+    return apiRequest.get('/api/v1/statistics/salary-analysis');
   }
 
   /**
@@ -187,7 +187,7 @@ class StatisticsService {
     success_rate: number;
     average_salary: number;
   }>> {
-    return apiRequest.get('/statistics/locations');
+    return apiRequest.get('/api/v1/statistics/locations');
   }
 
   /**
@@ -228,7 +228,7 @@ class StatisticsService {
    * Export statistics data
    */
   async exportStats(format: 'csv' | 'json' = 'json'): Promise<Blob> {
-    const response = await apiRequest.get(`/statistics/export?format=${format}`, {
+    const response = await apiRequest.get(`/api/v1/statistics/export?format=${format}`, {
       responseType: 'blob',
     });
     return response as Blob;
@@ -251,7 +251,7 @@ class StatisticsService {
       offer_rate: number;
     };
   }> {
-    return apiRequest.get('/statistics/dashboard');
+    return apiRequest.get('/api/v1/statistics/dashboard');
   }
 }
 
