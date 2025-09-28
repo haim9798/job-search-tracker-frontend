@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AppProvider } from './providers';
 import { LoginPage, RegisterPage, DashboardPage, PositionsPage, CreatePositionPage, EditPositionPage, PositionDetailsPage, StatisticsPage } from './pages';
 import { ErrorBoundary } from './components/error';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 function App() {
   // Debug logging for app initialization
@@ -25,24 +26,26 @@ function App() {
     // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
   };
 
-  // STEP 1: Add ErrorBoundary back
-  console.log('🧪 STEP 1: Adding ErrorBoundary back');
+  // STEP 2: Add ThemeProvider
+  console.log('🧪 STEP 2: Adding ThemeProvider');
   
   return (
     <ErrorBoundary onError={handleGlobalError}>
-      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <h1>🧪 Step 1: ErrorBoundary Test</h1>
-        <p>If you see this, ErrorBoundary is working.</p>
-        <p>Current URL: {window.location.href}</p>
-        <p>Environment: {process.env.NODE_ENV}</p>
-        <p>API URL: https://job-search-tracker-api.onrender.com</p>
-        <button onClick={() => {
-          console.log('Button clicked!');
-          alert('Button works!');
-        }}>
-          Test Button
-        </button>
-      </div>
+      <ThemeProvider>
+        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+          <h1>🧪 Step 2: ThemeProvider Test</h1>
+          <p>If you see this, ThemeProvider is working.</p>
+          <p>Current URL: {window.location.href}</p>
+          <p>Environment: {process.env.NODE_ENV}</p>
+          <p>API URL: https://job-search-tracker-api.onrender.com</p>
+          <button onClick={() => {
+            console.log('Button clicked!');
+            alert('Button works!');
+          }}>
+            Test Button
+          </button>
+        </div>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
