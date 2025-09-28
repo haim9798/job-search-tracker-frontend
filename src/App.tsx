@@ -28,27 +28,35 @@ function App() {
     // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
   };
 
-  // STEP 5: Add AuthProvider (skip CacheProvider - it's causing the hang)
-  console.log('🧪 STEP 5: Adding AuthProvider (skipping CacheProvider)');
+  // STEP 6: Add Router and routes (skip CacheProvider - it's causing the hang)
+  console.log('🧪 STEP 6: Adding Router and routes (skipping CacheProvider)');
   
   return (
     <ErrorBoundary onError={handleGlobalError}>
       <ThemeProvider>
         <QueryProvider>
           <AuthProvider>
-            <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-              <h1>🧪 Step 5: AuthProvider Test</h1>
-              <p>If you see this, AuthProvider is working.</p>
-              <p>Current URL: {window.location.href}</p>
-              <p>Environment: {process.env.NODE_ENV}</p>
-              <p>API URL: https://job-search-tracker-api.onrender.com</p>
-              <button onClick={() => {
-                console.log('Button clicked!');
-                alert('Button works!');
-              }}>
-                Test Button
-              </button>
-            </div>
+            <Router>
+              <Routes>
+                {/* Public routes */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                
+                {/* Protected routes */}
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/positions" element={<PositionsPage />} />
+                <Route path="/positions/create" element={<CreatePositionPage />} />
+                <Route path="/positions/:id" element={<PositionDetailsPage />} />
+                <Route path="/positions/:id/edit" element={<EditPositionPage />} />
+                <Route path="/statistics" element={<StatisticsPage />} />
+                
+                {/* Default redirect */}
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                
+                {/* Catch all route */}
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
+            </Router>
           </AuthProvider>
         </QueryProvider>
       </ThemeProvider>
