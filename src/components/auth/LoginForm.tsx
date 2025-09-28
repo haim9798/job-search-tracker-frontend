@@ -94,7 +94,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, className }) =>
         <Input
           label="Email address"
           type="email"
-          autoComplete="email"
+          autoComplete="username"
+          name="username"
           required
           error={errors.email?.message}
           {...register('email', {
