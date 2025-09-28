@@ -12,6 +12,11 @@ function App() {
   console.log('  All process.env keys:', Object.keys(process.env));
   console.log('  REACT_APP_* env vars:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
   
+  // Test if console is working
+  console.warn('⚠️ Console test - this should be visible');
+  console.error('❌ Console error test - this should be visible');
+  alert('App is loading - check console for debug logs');
+  
   const handleGlobalError = (error: Error, errorInfo: React.ErrorInfo) => {
     // Log to console in development
     console.error('Global error caught:', error, errorInfo);
