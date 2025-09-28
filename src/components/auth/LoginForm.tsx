@@ -6,7 +6,6 @@ import { ErrorBoundary } from '../error';
 import { useAuth } from '../../hooks/useAuth';
 import { useFormFeedback } from '../../hooks/useFeedback';
 import { LoginFormData } from '../../types';
-import { getFormErrorMessage } from '../../utils/errorMessages';
 
 interface LoginFormProps {
   onSuccess?: () => void;
