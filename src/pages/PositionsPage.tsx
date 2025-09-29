@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { AuthGuard } from '../components/auth/AuthGuard';
 import { usePositions, usePositionFilters } from '../hooks';
 import { PositionList } from '../components/positions';
-import { Position } from '../types';
+import { Modal } from '../components/ui/Modal';
+import InterviewForm from '../components/interviews/InterviewForm';
+import { useCreateInterview } from '../hooks/useInterviews';
+import { Position, CreateInterviewData } from '../types';
 
 export const PositionsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +24,11 @@ export const PositionsPage: React.FC = () => {
   } = usePositions(filters);
 
   const positions = positionsResponse?.positions || [];
+  const createInterviewMutation = useCreateInterview();
+
+  // Modal state
+  const [showInterviewForm, setShowInterviewForm] = useState(false);
+  const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
 
   const handleCreateNew = () => {
     navigate('/positions/create');
@@ -39,33 +47,22 @@ export const PositionsPage: React.FC = () => {
 
   const handleAddInterview = (positionId: string) => {
     console.log('🔍 DEBUG: PositionsPage handleAddInterview called with positionId:', positionId);
-    alert(`Adding interview for position: ${positionId}`);
-    // Create a simple interview with basic data
-    console.log('🔍 DEBUG: About to import interview service...');
-    import('../services/interviewService').then(({ interviewService }) => {
-      console.log('🔍 DEBUG: Interview service imported successfully, calling createInterview...');
-      interviewService.createInterview(positionId, {
-        position_id: positionId,
-        type: 'technical',
-        place: 'video',
-        scheduled_date: new Date().toISOString(),
-        outcome: 'pending',
-        notes: 'Interview scheduled from positions page'
-      }).then(() => {
-        console.log('🔍 DEBUG: Interview created successfully!');
-        toast.success('Interview scheduled successfully!');
-        // Refresh the positions data
-        refetchPositions();
-      }).catch((error) => {
-        console.log('🔍 DEBUG: Error creating interview:', error);
-        toast.error('Failed to schedule interview');
-        console.error('Error creating interview:', error);
-      });
-    }).catch((error) => {
-      console.log('🔍 DEBUG: Error loading interview service:', error);
-      toast.error('Failed to load interview service');
-      console.error('Error loading service:', error);
-    });
+    setSelectedPositionId(positionId);
+    setShowInterviewForm(true);
+  };
+
+  const handleInterviewSubmit = async (data: CreateInterviewData) => {
+    try {
+      await createInterviewMutation.mutateAsync(data);
+      setShowInterviewForm(false);
+      setSelectedPositionId(null);
+      toast.success('Interview scheduled successfully!');
+      // Refresh the positions data
+      refetchPositions();
+    } catch (error) {
+      toast.error('Failed to schedule interview');
+      console.error('Error creating interview:', error);
+    }
   };
 
   const handleViewDetails = (id: string) => {
@@ -114,6 +111,30 @@ export const PositionsPage: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Interview Form Modal */}
+        {showInterviewForm && selectedPositionId && (
+          <Modal
+            isOpen={showInterviewForm}
+            onClose={() => {
+              setShowInterviewForm(false);
+              setSelectedPositionId(null);
+            }}
+            title="Schedule New Interview"
+            size="lg"
+          >
+            <InterviewForm
+              positionId={selectedPositionId}
+              onSubmit={handleInterviewSubmit}
+              onCancel={() => {
+                setShowInterviewForm(false);
+                setSelectedPositionId(null);
+              }}
+              loading={createInterviewMutation.isPending}
+              mode="create"
+            />
+          </Modal>
+        )}
       </div>
     </AuthGuard>
   );

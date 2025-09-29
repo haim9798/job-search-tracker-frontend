@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
@@ -6,13 +6,16 @@ import { AuthGuard } from '../components/auth';
 import { AppLayout } from '../components/layout';
 import { PositionDetails } from '../components/positions';
 import { Button } from '../components/ui';
+import { Modal } from '../components/ui/Modal';
+import InterviewForm from '../components/interviews/InterviewForm';
 import { 
   usePosition, 
   useUpdatePosition, 
   useDeletePosition, 
   useUpdatePositionStatus 
 } from '../hooks/usePositions';
-import { PositionStatus, UpdatePositionData } from '../types';
+import { useCreateInterview } from '../hooks/useInterviews';
+import { PositionStatus, UpdatePositionData, CreateInterviewData } from '../types';
 
 export const PositionDetailsPage: React.FC = () => {
   console.log('🚀 PositionDetailsPage loaded!');
@@ -27,6 +30,10 @@ export const PositionDetailsPage: React.FC = () => {
   const updatePositionMutation = useUpdatePosition();
   const deletePositionMutation = useDeletePosition();
   const updateStatusMutation = useUpdatePositionStatus();
+  const createInterviewMutation = useCreateInterview();
+
+  // Modal state
+  const [showInterviewForm, setShowInterviewForm] = useState(false);
 
   const handleEdit = async (positionId: string, data: UpdatePositionData) => {
     try {
@@ -58,34 +65,19 @@ export const PositionDetailsPage: React.FC = () => {
 
   const handleAddInterview = (positionId: string) => {
     console.log('🔍 DEBUG: handleAddInterview called with positionId:', positionId);
-    alert(`Adding interview for position: ${positionId}`);
-    // Navigate to interview creation page or open modal
-    // For now, add a simple interview with basic data
-    console.log('🔍 DEBUG: About to import interview service...');
-    import('../services/interviewService').then(({ interviewService }) => {
-      console.log('🔍 DEBUG: Interview service imported successfully, calling createInterview...');
-      interviewService.createInterview(positionId, {
-        position_id: positionId,
-        type: 'technical',
-        place: 'video',
-        scheduled_date: new Date().toISOString(),
-        outcome: 'pending',
-        notes: 'Interview scheduled'
-      }).then(() => {
-        console.log('🔍 DEBUG: Interview created successfully!');
-        toast.success('Interview scheduled successfully!');
-        // Optionally refresh the position data
-        window.location.reload();
-      }).catch((error) => {
-        console.log('🔍 DEBUG: Error creating interview:', error);
-        toast.error('Failed to schedule interview');
-        console.error('Error creating interview:', error);
-      });
-    }).catch((error) => {
-      console.log('🔍 DEBUG: Error loading interview service:', error);
-      toast.error('Failed to load interview service');
-      console.error('Error loading service:', error);
-    });
+    // Open interview form modal instead of alert
+    setShowInterviewForm(true);
+  };
+
+  const handleInterviewSubmit = async (data: CreateInterviewData) => {
+    try {
+      await createInterviewMutation.mutateAsync(data);
+      setShowInterviewForm(false);
+      toast.success('Interview scheduled successfully!');
+    } catch (error) {
+      toast.error('Failed to schedule interview');
+      console.error('Error creating interview:', error);
+    }
   };
 
   const handleBack = () => {
@@ -173,6 +165,24 @@ export const PositionDetailsPage: React.FC = () => {
             />
           )}
         </div>
+
+        {/* Interview Form Modal */}
+        {showInterviewForm && id && (
+          <Modal
+            isOpen={showInterviewForm}
+            onClose={() => setShowInterviewForm(false)}
+            title="Schedule New Interview"
+            size="lg"
+          >
+            <InterviewForm
+              positionId={id}
+              onSubmit={handleInterviewSubmit}
+              onCancel={() => setShowInterviewForm(false)}
+              loading={createInterviewMutation.isPending}
+              mode="create"
+            />
+          </Modal>
+        )}
       </AppLayout>
     </AuthGuard>
   );
