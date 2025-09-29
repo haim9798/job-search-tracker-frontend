@@ -38,8 +38,12 @@ export const PositionsPage: React.FC = () => {
   };
 
   const handleAddInterview = (positionId: string) => {
+    console.log('🔍 DEBUG: PositionsPage handleAddInterview called with positionId:', positionId);
+    alert(`Adding interview for position: ${positionId}`);
     // Create a simple interview with basic data
+    console.log('🔍 DEBUG: About to import interview service...');
     import('../services/interviewService').then(({ interviewService }) => {
+      console.log('🔍 DEBUG: Interview service imported successfully, calling createInterview...');
       interviewService.createInterview(positionId, {
         position_id: positionId,
         type: 'technical',
@@ -48,14 +52,17 @@ export const PositionsPage: React.FC = () => {
         outcome: 'pending',
         notes: 'Interview scheduled from positions page'
       }).then(() => {
+        console.log('🔍 DEBUG: Interview created successfully!');
         toast.success('Interview scheduled successfully!');
         // Refresh the positions data
         refetchPositions();
       }).catch((error) => {
+        console.log('🔍 DEBUG: Error creating interview:', error);
         toast.error('Failed to schedule interview');
         console.error('Error creating interview:', error);
       });
     }).catch((error) => {
+      console.log('🔍 DEBUG: Error loading interview service:', error);
       toast.error('Failed to load interview service');
       console.error('Error loading service:', error);
     });
