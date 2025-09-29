@@ -95,6 +95,8 @@ export const DashboardPage: React.FC = () => {
           id: interviewId,
           data: { outcome: value },
         });
+        // Refresh positions data to update the UI
+        refetchPositions();
       }
     } catch (error) {
       console.error('Failed to update interview:', error);
