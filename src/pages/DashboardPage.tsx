@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { AuthGuard } from '../components/auth/AuthGuard';
 import { useAuth } from '../hooks/useAuth';
 import { usePositions, usePositionFilters } from '../hooks';
 import { Button } from '../components/ui';
+import { Modal } from '../components/ui/Modal';
+import InterviewForm from '../components/interviews/InterviewForm';
 import { PositionList, DashboardSummary } from '../components';
-import { Position } from '../types';
+import { useCreateInterview } from '../hooks/useInterviews';
+import { Position, CreateInterviewData } from '../types';
 
 export const DashboardPage: React.FC = () => {
   const { user, logout, isLoading: authLoading } = useAuth();
@@ -18,10 +22,16 @@ export const DashboardPage: React.FC = () => {
   const { 
     data: positionsResponse, 
     isLoading: positionsLoading, 
-    error: positionsError
+    error: positionsError,
+    refetch: refetchPositions
   } = usePositions(filters);
 
   const positions = positionsResponse?.positions || [];
+  const createInterviewMutation = useCreateInterview();
+
+  // Modal state
+  const [showInterviewForm, setShowInterviewForm] = useState(false);
+  const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
 
   const handleLogout = async () => {
     try {
@@ -50,9 +60,23 @@ export const DashboardPage: React.FC = () => {
   };
 
   const handleAddInterview = (positionId: string) => {
-    // TODO: Navigate to add interview page or open modal
     console.log('Add interview for position:', positionId);
-    navigate(`/positions/${positionId}/interviews/new`);
+    setSelectedPositionId(positionId);
+    setShowInterviewForm(true);
+  };
+
+  const handleInterviewSubmit = async (data: CreateInterviewData) => {
+    try {
+      await createInterviewMutation.mutateAsync(data);
+      setShowInterviewForm(false);
+      setSelectedPositionId(null);
+      toast.success('Interview scheduled successfully!');
+      // Refresh the positions data
+      refetchPositions();
+    } catch (error) {
+      toast.error('Failed to schedule interview');
+      console.error('Error creating interview:', error);
+    }
   };
 
   const handleViewDetails = (id: string) => {
@@ -113,7 +137,29 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-
+        {/* Interview Form Modal */}
+        {showInterviewForm && selectedPositionId && (
+          <Modal
+            isOpen={showInterviewForm}
+            onClose={() => {
+              setShowInterviewForm(false);
+              setSelectedPositionId(null);
+            }}
+            title="Schedule New Interview"
+            size="lg"
+          >
+            <InterviewForm
+              positionId={selectedPositionId}
+              onSubmit={handleInterviewSubmit}
+              onCancel={() => {
+                setShowInterviewForm(false);
+                setSelectedPositionId(null);
+              }}
+              loading={createInterviewMutation.isPending}
+              mode="create"
+            />
+          </Modal>
+        )}
       </div>
     </AuthGuard>
   );
