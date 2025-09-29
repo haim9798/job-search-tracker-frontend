@@ -1,9 +1,1 @@
-# Render.com SPA routing configuration
-# This file ensures that all routes are handled by the React app
-# and prevents 404 errors when refreshing on client-side routes
-
-# Handle all routes by serving index.html
 /*    /index.html   200
-
-# Alternative format
-/* /index.html 200
