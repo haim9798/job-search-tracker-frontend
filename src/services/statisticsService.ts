@@ -42,6 +42,35 @@ class StatisticsService {
   }
 
   /**
+   * Get detailed statistics for a specific company
+   */
+  async getCompanyDetails(companyName: string): Promise<{
+    company_name: string;
+    total_applications: number;
+    total_interviews: number;
+    success_rate: number;
+    positions: Array<{
+      id: string;
+      title: string;
+      company: string;
+      location: string;
+      status: string;
+      application_date: string;
+      salary_range: string;
+      description: string;
+      interviews: Array<{
+        id: string;
+        type: string;
+        scheduled_date: string;
+        outcome: string;
+        notes: string;
+      }>;
+    }>;
+  }> {
+    return apiRequest.get(`/api/v1/statistics/companies/${encodeURIComponent(companyName)}`);
+  }
+
+  /**
    * Get statistics for a specific date range
    */
   async getStatsByDateRange(dateFrom: string, dateTo: string): Promise<PositionStatistics> {

@@ -89,17 +89,14 @@ export const DrillDownModal: React.FC<DrillDownModalProps> = ({
           
         case 'company':
           // Fetch company details
-          const companyStats = await statisticsService.getCompanyStats();
-          const company = companyStats.find(c => c.name === value);
-          if (company) {
-            result.companyDetails = {
-              name: company.name,
-              total_positions: company.position_count,
-              total_interviews: company.interview_count,
-              success_rate: 0, // Would need to be calculated
-              positions: [], // Would need to be fetched
-            };
-          }
+          const companyDetails = await statisticsService.getCompanyDetails(value);
+          result.companyDetails = {
+            name: companyDetails.company_name,
+            total_positions: companyDetails.total_applications,
+            total_interviews: companyDetails.total_interviews,
+            success_rate: companyDetails.success_rate,
+            positions: companyDetails.positions,
+          };
           break;
       }
       
