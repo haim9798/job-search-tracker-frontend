@@ -4,3 +4,6 @@
 
 # Handle all routes by serving index.html
 /*    /index.html   200
+
+# Alternative format
+/* /index.html 200

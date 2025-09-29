@@ -9,6 +9,12 @@ buildCommand: |
 # Static site settings
 staticPublishPath: build
 
+# SPA routing configuration
+routes:
+  - type: rewrite
+    source: /*
+    destination: /index.html
+
 # Environment variables (set these in Render dashboard)
 # REACT_APP_API_URL=https://your-backend-domain.onrender.com
 # REACT_APP_ENVIRONMENT=production
