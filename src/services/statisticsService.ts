@@ -75,11 +75,11 @@ class StatisticsService {
    */
   async getStatsByDateRange(dateFrom: string, dateTo: string): Promise<PositionStatistics> {
     const params = new URLSearchParams({
-      date_from: dateFrom,
-      date_to: dateTo,
+      start_date: dateFrom,
+      end_date: dateTo,
     });
     
-    return apiRequest.get<PositionStatistics>(`/statistics?${params.toString()}`);
+    return apiRequest.get<PositionStatistics>(`/api/v1/statistics/overview?${params.toString()}`);
   }
 
   /**
@@ -225,30 +225,26 @@ class StatisticsService {
   async getCustomStats(filters: {
     dateFrom?: string;
     dateTo?: string;
-    companies?: string[];
-    statuses?: string[];
-    locations?: string[];
+    company?: string;
+    status?: string;
   }): Promise<PositionStatistics> {
     const params = new URLSearchParams();
     
     if (filters.dateFrom) {
-      params.append('date_from', filters.dateFrom);
+      params.append('start_date', filters.dateFrom);
     }
     if (filters.dateTo) {
-      params.append('date_to', filters.dateTo);
+      params.append('end_date', filters.dateTo);
     }
-    if (filters.companies?.length) {
-      filters.companies.forEach(company => params.append('companies', company));
+    if (filters.company) {
+      params.append('company', filters.company);
     }
-    if (filters.statuses?.length) {
-      filters.statuses.forEach(status => params.append('statuses', status));
-    }
-    if (filters.locations?.length) {
-      filters.locations.forEach(location => params.append('locations', location));
+    if (filters.status) {
+      params.append('status', filters.status);
     }
     
     const queryString = params.toString();
-    const url = queryString ? `/statistics/custom?${queryString}` : '/statistics/custom';
+    const url = queryString ? `/api/v1/statistics/overview?${queryString}` : '/api/v1/statistics/overview';
     
     return apiRequest.get<PositionStatistics>(url);
   }

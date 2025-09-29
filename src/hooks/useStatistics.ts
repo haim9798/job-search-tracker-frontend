@@ -146,9 +146,8 @@ export const useLocationStats = () => {
 export const useCustomStats = (filters: {
   dateFrom?: string;
   dateTo?: string;
-  companies?: string[];
-  statuses?: string[];
-  locations?: string[];
+  company?: string;
+  status?: string;
 }) => {
   return useQuery({
     queryKey: queryKeys.statistics.custom(filters),
