@@ -151,7 +151,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, className
           label="Email address"
           type="email"
           autoComplete="username"
-          name="username"
           required
           error={errors.email?.message}
           {...register('email', {
