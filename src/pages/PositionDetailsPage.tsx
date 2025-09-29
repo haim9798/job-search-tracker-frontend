@@ -37,6 +37,7 @@ export const PositionDetailsPage: React.FC = () => {
   // Modal state
   const [showInterviewForm, setShowInterviewForm] = useState(false);
   const [editingInterview, setEditingInterview] = useState<Interview | null>(null);
+  const [formKey, setFormKey] = useState(0); // Key to force form reset
 
   const handleEdit = async (positionId: string, data: UpdatePositionData) => {
     try {
@@ -68,7 +69,9 @@ export const PositionDetailsPage: React.FC = () => {
 
   const handleAddInterview = (positionId: string) => {
     console.log('🔍 DEBUG: handleAddInterview called with positionId:', positionId);
-    // Open interview form modal instead of alert
+    // Reset form state and open modal
+    setEditingInterview(null);
+    setFormKey(prev => prev + 1); // Force form reset
     setShowInterviewForm(true);
   };
 
@@ -98,6 +101,7 @@ export const PositionDetailsPage: React.FC = () => {
 
   const handleEditInterview = (interview: Interview) => {
     setEditingInterview(interview);
+    setFormKey(prev => prev + 1); // Force form reset
     setShowInterviewForm(true);
   };
 
@@ -214,11 +218,17 @@ export const PositionDetailsPage: React.FC = () => {
             size="lg"
           >
             <InterviewForm
+              key={formKey}
               interview={editingInterview || undefined}
               positionId={id}
               onSubmit={handleInterviewSubmit}
               onCancel={() => {
                 setShowInterviewForm(false);
+                setEditingInterview(null);
+              }}
+              onSuccess={() => {
+                // Reset form state after successful submission
+                setFormKey(prev => prev + 1);
                 setEditingInterview(null);
               }}
               loading={editingInterview ? updateInterviewMutation.isPending : createInterviewMutation.isPending}

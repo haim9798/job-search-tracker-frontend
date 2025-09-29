@@ -29,6 +29,7 @@ export const PositionsPage: React.FC = () => {
   // Modal state
   const [showInterviewForm, setShowInterviewForm] = useState(false);
   const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
+  const [formKey, setFormKey] = useState(0); // Key to force form reset
 
   const handleCreateNew = () => {
     navigate('/positions/create');
@@ -48,6 +49,7 @@ export const PositionsPage: React.FC = () => {
   const handleAddInterview = (positionId: string) => {
     console.log('🔍 DEBUG: PositionsPage handleAddInterview called with positionId:', positionId);
     setSelectedPositionId(positionId);
+    setFormKey(prev => prev + 1); // Force form reset
     setShowInterviewForm(true);
   };
 
@@ -124,11 +126,16 @@ export const PositionsPage: React.FC = () => {
             size="lg"
           >
             <InterviewForm
+              key={formKey}
               positionId={selectedPositionId}
               onSubmit={handleInterviewSubmit}
               onCancel={() => {
                 setShowInterviewForm(false);
                 setSelectedPositionId(null);
+              }}
+              onSuccess={() => {
+                // Reset form state after successful submission
+                setFormKey(prev => prev + 1);
               }}
               loading={createInterviewMutation.isPending}
               mode="create"

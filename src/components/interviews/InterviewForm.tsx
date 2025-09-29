@@ -22,6 +22,7 @@ interface InterviewFormProps {
   onCancel: () => void;
   loading?: boolean;
   mode?: 'create' | 'edit';
+  onSuccess?: () => void;
 }
 
 const InterviewForm: React.FC<InterviewFormProps> = ({
@@ -31,6 +32,7 @@ const InterviewForm: React.FC<InterviewFormProps> = ({
   onCancel,
   loading = false,
   mode = interview ? 'edit' : 'create',
+  onSuccess,
 }) => {
   const [isDraft, setIsDraft] = useState(false);
 
@@ -88,6 +90,8 @@ const InterviewForm: React.FC<InterviewFormProps> = ({
       const draftKey = `interview-draft-${positionId}`;
       localStorage.removeItem(draftKey);
       setIsDraft(false);
+      // Reset form to default values
+      reset();
     }
   };
 
@@ -113,6 +117,10 @@ const InterviewForm: React.FC<InterviewFormProps> = ({
 
     onSubmit(submitData);
     clearDraft();
+    // Call onSuccess callback if provided
+    if (onSuccess) {
+      onSuccess();
+    }
   };
 
   const handleCancel = () => {
