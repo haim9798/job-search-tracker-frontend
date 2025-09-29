@@ -8,18 +8,6 @@ import { QueryProvider } from './providers/QueryProvider';
 import { AuthProvider } from './providers/AuthProvider';
 
 function App() {
-  // Debug logging for app initialization
-  console.log('🚀 App Component Initializing...');
-  console.log('  Current URL:', window.location.href);
-  console.log('  User Agent:', navigator.userAgent);
-  console.log('  All process.env keys:', Object.keys(process.env));
-  console.log('  REACT_APP_* env vars:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
-  
-  // Test if console is working
-  console.warn('⚠️ Console test - this should be visible');
-  console.error('❌ Console error test - this should be visible');
-  alert('App is loading - check console for debug logs');
-  
   const handleGlobalError = (error: Error, errorInfo: React.ErrorInfo) => {
     // Log to console in development
     console.error('Global error caught:', error, errorInfo);
@@ -28,9 +16,6 @@ function App() {
     // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
   };
 
-  // STEP 6: Add Router and routes (skip CacheProvider - it's causing the hang)
-  console.log('🧪 STEP 6: Adding Router and routes (skipping CacheProvider)');
-  
   return (
     <ErrorBoundary onError={handleGlobalError}>
       <ThemeProvider>
