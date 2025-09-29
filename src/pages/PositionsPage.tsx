@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { AuthGuard } from '../components/auth/AuthGuard';
 import { usePositions, usePositionFilters } from '../hooks';
 import { PositionList } from '../components/positions';
@@ -37,7 +38,27 @@ export const PositionsPage: React.FC = () => {
   };
 
   const handleAddInterview = (positionId: string) => {
-    navigate(`/positions/${positionId}/interviews/new`);
+    // Create a simple interview with basic data
+    import('../services/interviewService').then(({ interviewService }) => {
+      interviewService.createInterview(positionId, {
+        position_id: positionId,
+        type: 'technical',
+        place: 'video',
+        scheduled_date: new Date().toISOString(),
+        outcome: 'pending',
+        notes: 'Interview scheduled from positions page'
+      }).then(() => {
+        toast.success('Interview scheduled successfully!');
+        // Refresh the positions data
+        refetchPositions();
+      }).catch((error) => {
+        toast.error('Failed to schedule interview');
+        console.error('Error creating interview:', error);
+      });
+    }).catch((error) => {
+      toast.error('Failed to load interview service');
+      console.error('Error loading service:', error);
+    });
   };
 
   const handleViewDetails = (id: string) => {

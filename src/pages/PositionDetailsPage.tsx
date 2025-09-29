@@ -51,11 +51,28 @@ export const PositionDetailsPage: React.FC = () => {
     }
   };
 
-  const handleAddInterview = (_positionId: string) => {
-    // TODO: This will be implemented when interview management is added
-    // For now, show a placeholder message
-    toast('Interview management coming soon!', {
-      icon: '🚧',
+  const handleAddInterview = (positionId: string) => {
+    // Navigate to interview creation page or open modal
+    // For now, add a simple interview with basic data
+    import('../services/interviewService').then(({ interviewService }) => {
+      interviewService.createInterview(positionId, {
+        position_id: positionId,
+        type: 'technical',
+        place: 'video',
+        scheduled_date: new Date().toISOString(),
+        outcome: 'pending',
+        notes: 'Interview scheduled'
+      }).then(() => {
+        toast.success('Interview scheduled successfully!');
+        // Optionally refresh the position data
+        window.location.reload();
+      }).catch((error) => {
+        toast.error('Failed to schedule interview');
+        console.error('Error creating interview:', error);
+      });
+    }).catch((error) => {
+      toast.error('Failed to load interview service');
+      console.error('Error loading service:', error);
     });
   };
 
