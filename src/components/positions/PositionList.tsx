@@ -21,6 +21,7 @@ interface PositionListProps {
   onDeletePosition: (id: string) => void;
   onAddInterview: (positionId: string) => void;
   onViewDetails: (id: string) => void;
+  onQuickUpdateInterview?: (interviewId: string, field: string, value: any) => void;
   onRefresh?: () => Promise<void> | void;
   showFilters?: boolean;
   className?: string;
@@ -104,6 +105,7 @@ export const PositionList: React.FC<PositionListProps> = ({
   onDeletePosition,
   onAddInterview,
   onViewDetails,
+  onQuickUpdateInterview,
   onRefresh,
   showFilters = true,
   className,
@@ -217,6 +219,7 @@ export const PositionList: React.FC<PositionListProps> = ({
               onDelete={onDeletePosition}
               onAddInterview={onAddInterview}
               onViewDetails={onViewDetails}
+              onQuickUpdateInterview={onQuickUpdateInterview}
             />
           </SwipeableCard>
         ))}

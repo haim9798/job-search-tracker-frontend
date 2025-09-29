@@ -19,6 +19,7 @@ interface PositionCardProps {
   onDelete: (id: string) => void;
   onAddInterview: (positionId: string) => void;
   onViewDetails: (id: string) => void;
+  onQuickUpdateInterview?: (interviewId: string, field: string, value: any) => void;
   className?: string;
 }
 
@@ -101,6 +102,7 @@ export const PositionCard: React.FC<PositionCardProps> = ({
   onDelete,
   onAddInterview,
   onViewDetails,
+  onQuickUpdateInterview,
   className,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -257,7 +259,14 @@ export const PositionCard: React.FC<PositionCardProps> = ({
           {upcomingInterviews.length > 0 ? (
             <div className="space-y-2">
               {upcomingInterviews.map((interview) => (
-                <InterviewPreview key={interview.id} interview={interview} />
+                <InterviewPreview 
+                  key={interview.id} 
+                  interviews={[interview]} 
+                  positionId={position.id}
+                  onAddInterview={onAddInterview}
+                  onQuickUpdate={onQuickUpdateInterview}
+                  showAddButton={false}
+                />
               ))}
               {totalInterviews > 2 && (
                 <div className="text-xs text-gray-500 text-center py-1">

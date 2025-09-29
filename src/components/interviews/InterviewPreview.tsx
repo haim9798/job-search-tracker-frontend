@@ -7,7 +7,9 @@ import {
   BuildingOfficeIcon,
   PlusIcon,
   ExclamationTriangleIcon,
-  ClockIcon
+  ClockIcon,
+  CheckCircleIcon,
+  XCircleIcon
 } from '@heroicons/react/24/outline';
 import { Interview, InterviewType, InterviewPlace, InterviewOutcome } from '../../types';
 import { Button } from '../ui/Button';
@@ -19,6 +21,7 @@ interface InterviewPreviewProps {
   positionId: string;
   onAddInterview: (positionId: string) => void;
   onInterviewClick?: (interview: Interview) => void;
+  onQuickUpdate?: (interviewId: string, field: string, value: any) => void;
   maxVisible?: number;
   showAddButton?: boolean;
 }
@@ -28,6 +31,7 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   positionId,
   onAddInterview,
   onInterviewClick,
+  onQuickUpdate,
   maxVisible = 3,
   showAddButton = true,
 }) => {
@@ -190,6 +194,36 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
                   )}
                   <StatusBadge status={interview.outcome} size="sm" />
+                  
+                  {/* Quick outcome buttons for pending interviews */}
+                  {interview.outcome === InterviewOutcome.PENDING && onQuickUpdate && (
+                    <div className="flex items-center space-x-1 ml-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onQuickUpdate(interview.id, 'outcome', InterviewOutcome.PASSED);
+                        }}
+                        className="p-1 text-green-600 hover:text-green-700"
+                        title="Mark as Passed"
+                      >
+                        <CheckCircleIcon className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onQuickUpdate(interview.id, 'outcome', InterviewOutcome.FAILED);
+                        }}
+                        className="p-1 text-red-600 hover:text-red-700"
+                        title="Mark as Failed"
+                      >
+                        <XCircleIcon className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </InterviewTooltip>

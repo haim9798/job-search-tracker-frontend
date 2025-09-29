@@ -87,6 +87,19 @@ export const DashboardPage: React.FC = () => {
     navigate(`/positions/${id}`);
   };
 
+  const handleQuickUpdateInterview = async (interviewId: string, field: string, value: any) => {
+    try {
+      if (field === 'outcome') {
+        await updateInterviewMutation.mutateAsync({
+          id: interviewId,
+          outcome: value,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to update interview:', error);
+    }
+  };
+
   return (
     <AuthGuard>
       <div className="min-h-screen bg-gray-50">
@@ -142,6 +155,7 @@ export const DashboardPage: React.FC = () => {
               onDeletePosition={handleDeletePosition}
               onAddInterview={handleAddInterview}
               onViewDetails={handleViewDetails}
+              onQuickUpdateInterview={handleQuickUpdateInterview}
               showFilters={true}
             />
           </div>
