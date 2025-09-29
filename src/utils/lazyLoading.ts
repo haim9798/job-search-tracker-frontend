@@ -192,7 +192,7 @@ export const useLazyIntersection = (
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isVisible = entry.isIntersecting;
+        const isVisible = entry?.isIntersecting;
         setIsIntersecting(isVisible);
         
         if (isVisible && !hasIntersected) {

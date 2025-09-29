@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback } from 'react';
 
 interface SwipeGestureOptions {
   onSwipeLeft?: () => void;
@@ -30,8 +30,8 @@ export const useSwipeGestures = (options: SwipeGestureOptions) => {
   const handleTouchStart = useCallback((e: TouchEvent) => {
     touchEnd.current = null;
     touchStart.current = {
-      x: e.targetTouches[0].clientX,
-      y: e.targetTouches[0].clientY,
+      x: e.targetTouches[0]?.clientX || 0,
+      y: e.targetTouches[0]?.clientY || 0,
     };
   }, []);
 
@@ -40,8 +40,8 @@ export const useSwipeGestures = (options: SwipeGestureOptions) => {
       e.preventDefault();
     }
     touchEnd.current = {
-      x: e.targetTouches[0].clientX,
-      y: e.targetTouches[0].clientY,
+      x: e.targetTouches[0]?.clientX || 0,
+      y: e.targetTouches[0]?.clientY || 0,
     };
   }, [preventDefaultTouchmove]);
 

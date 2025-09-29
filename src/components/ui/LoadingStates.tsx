@@ -332,7 +332,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           {index < steps.length - 1 && (
             <div
               className={`flex-1 h-0.5 mx-4 ${
-                steps[index + 1].completed ? 'bg-green-600' : 'bg-gray-300'
+                steps[index + 1]?.completed ? 'bg-green-600' : 'bg-gray-300'
               }`}
             />
           )}

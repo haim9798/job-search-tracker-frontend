@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useState } from 'react';
 
 interface PullToRefreshOptions {
   onRefresh: () => Promise<void> | void;
@@ -29,7 +29,7 @@ export const usePullToRefresh = (options: PullToRefreshOptions) => {
     const element = scrollElement.current;
     if (!element || element.scrollTop > 0) return;
 
-    startY.current = e.touches[0].clientY;
+    startY.current = e.touches[0]?.clientY || 0;
     setIsPulling(true);
   }, [enabled, isRefreshing]);
 
@@ -43,7 +43,7 @@ export const usePullToRefresh = (options: PullToRefreshOptions) => {
       return;
     }
 
-    currentY.current = e.touches[0].clientY;
+    currentY.current = e.touches[0]?.clientY || 0;
     const deltaY = currentY.current - startY.current;
 
     if (deltaY > 0) {

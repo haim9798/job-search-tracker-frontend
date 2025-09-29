@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { Position, Interview, User, PositionStatus, InterviewType, InterviewPlace, InterviewOutcome } from '../../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
@@ -64,7 +64,7 @@ mockPositions[1].interviews = [mockInterviews[0]];
 
 export const handlers = [
   // Auth endpoints
-  rest.post(`${API_BASE_URL}/auth/login`, (req, res, ctx) => {
+  http.post(`${API_BASE_URL}/auth/login`, () => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -274,7 +274,7 @@ export const errorHandlers = [
     return res(ctx.status(500), ctx.json({ detail: 'Internal server error' }));
   }),
 
-  rest.post(`${API_BASE_URL}/auth/login`, (req, res, ctx) => {
+  http.post(`${API_BASE_URL}/auth/login`, () => {
     return res(ctx.status(401), ctx.json({ detail: 'Invalid credentials' }));
   }),
 

@@ -62,7 +62,7 @@ export const PositionDetailsPage: React.FC = () => {
     }
   };
 
-  const handleAddInterview = (positionId: string) => {
+  const handleAddInterview = (_positionId: string) => {
     // Reset form state and open modal
     setEditingInterview(null);
     setFormKey(prev => prev + 1); // Force form reset
@@ -210,7 +210,7 @@ export const PositionDetailsPage: React.FC = () => {
           >
             <InterviewForm
               key={formKey}
-              interview={editingInterview || undefined}
+              interview={editingInterview ?? undefined}
               positionId={id}
               onSubmit={handleInterviewSubmit}
               onCancel={() => {

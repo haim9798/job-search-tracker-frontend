@@ -70,7 +70,7 @@ export const NetworkStatus: React.FC<NetworkStatusProps> = ({
   showDetails = false,
 }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [connectionType, setConnectionType] = useState<string>('unknown');
+  const [_connectionType, setConnectionType] = useState<string>('unknown');
   const [effectiveType, setEffectiveType] = useState<string>('unknown');
 
   useEffect(() => {

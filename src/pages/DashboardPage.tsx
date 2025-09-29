@@ -8,7 +8,7 @@ import { Button } from '../components/ui';
 import { Modal } from '../components/ui/Modal';
 import InterviewForm from '../components/interviews/InterviewForm';
 import { PositionList, DashboardSummary } from '../components';
-import { useCreateInterview } from '../hooks/useInterviews';
+import { useCreateInterview, useUpdateInterview } from '../hooks/useInterviews';
 import { Position, CreateInterviewData } from '../types';
 
 export const DashboardPage: React.FC = () => {
@@ -28,6 +28,7 @@ export const DashboardPage: React.FC = () => {
 
   const positions = positionsResponse?.positions || [];
   const createInterviewMutation = useCreateInterview();
+  const updateInterviewMutation = useUpdateInterview();
 
   // Modal state
   const [showInterviewForm, setShowInterviewForm] = useState(false);
@@ -67,7 +68,7 @@ export const DashboardPage: React.FC = () => {
     setShowInterviewForm(true);
   };
 
-  const handleInterviewSubmit = async (data: CreateInterviewData) => {
+  const handleInterviewSubmit = async (data: CreateInterviewData | any) => {
     try {
       await createInterviewMutation.mutateAsync(data);
       setShowInterviewForm(false);
@@ -92,7 +93,7 @@ export const DashboardPage: React.FC = () => {
       if (field === 'outcome') {
         await updateInterviewMutation.mutateAsync({
           id: interviewId,
-          outcome: value,
+          data: { outcome: value },
         });
       }
     } catch (error) {

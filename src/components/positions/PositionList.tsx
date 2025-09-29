@@ -21,7 +21,7 @@ interface PositionListProps {
   onDeletePosition: (id: string) => void;
   onAddInterview: (positionId: string) => void;
   onViewDetails: (id: string) => void;
-  onQuickUpdateInterview?: (interviewId: string, field: string, value: any) => void;
+  onQuickUpdateInterview?: ((interviewId: string, field: string, value: any) => void) | undefined;
   onRefresh?: () => Promise<void> | void;
   showFilters?: boolean;
   className?: string;

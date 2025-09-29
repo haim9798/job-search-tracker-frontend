@@ -95,7 +95,7 @@ export const DrillDownModal: React.FC<DrillDownModalProps> = ({
             total_positions: companyDetails.total_applications,
             total_interviews: companyDetails.total_interviews,
             success_rate: companyDetails.success_rate,
-            positions: companyDetails.positions,
+            positions: companyDetails.positions as any,
           };
           break;
       }

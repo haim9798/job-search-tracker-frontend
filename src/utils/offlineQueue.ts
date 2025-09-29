@@ -1,5 +1,4 @@
 import React from 'react';
-import { CacheManager } from './cacheManager';
 
 // Offline queue item interface
 export interface OfflineQueueItem {
@@ -124,7 +123,7 @@ export class OfflineQueue {
         'Content-Type': 'application/json',
         ...item.headers,
       },
-      body: item.data ? JSON.stringify(item.data) : undefined,
+      body: item.data ? JSON.stringify(item.data) : null,
     });
 
     if (!response.ok) {
@@ -218,8 +217,8 @@ export class OfflineQueue {
       totalItems: queue.length,
       itemsByType,
       itemsByResource,
-      oldestItem,
-      newestItem,
+      oldestItem: oldestItem || undefined,
+      newestItem: newestItem || undefined,
     };
   }
 }

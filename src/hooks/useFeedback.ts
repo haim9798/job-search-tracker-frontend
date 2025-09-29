@@ -11,7 +11,7 @@ interface FeedbackState {
 interface AsyncOperationOptions {
   loadingMessage?: string;
   successMessage?: string | ((result: any) => string);
-  errorMessage?: string | ((error: any) => string);
+  errorMessage?: string | ((error: any) => string) | undefined;
   showSuccessConfirmation?: boolean;
   confirmationTitle?: string;
   confirmationActions?: Array<{

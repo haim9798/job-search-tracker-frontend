@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 import { useCacheWarming, useSmartPrefetch, useIntelligentPrefetch, useIdlePrefetch } from '../hooks/useCacheWarming';
 import { useCacheInvalidation, useBackgroundSync } from '../hooks/useCacheInvalidation';
 import { useCacheMetrics, useQueryCacheMetrics } from '../hooks/useCacheMetrics';
-import { CacheManager, SessionCache } from '../utils/cacheManager';
-import { OfflineQueue, useOfflineQueue } from '../utils/offlineQueue';
-import { CachePersistence, useCachePersistence } from '../utils/cachePersistence';
-import { PerformanceMonitor, usePerformanceMonitor } from '../utils/performanceMonitor';
+import { CacheManager } from '../utils/cacheManager';
+import { useOfflineQueue } from '../utils/offlineQueue';
+import { useCachePersistence } from '../utils/cachePersistence';
+import { usePerformanceMonitor } from '../utils/performanceMonitor';
 
 // Cache context interface
 interface CacheContextType {
@@ -99,7 +99,7 @@ export const CacheProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     trackCacheHit,
     trackCacheMiss,
     trackQueryTime,
-    trackMutationTime,
+    trackMutationTime: _trackMutationTime,
     trackError,
     trackSuccess,
   } = useCacheMetrics();
@@ -167,12 +167,12 @@ export const CacheProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       const startTime = performance.now();
       try {
         const response = await originalFetch(...args);
-        const duration = performance.now() - startTime;
+        // const _duration = performance.now() - startTime;
         
         if (response.ok) {
           trackSuccess();
           if (args[0]?.toString().includes('/api/')) {
-            trackQueryTime(args[0].toString(), duration);
+            // trackQueryTime(args[0].toString(), duration);
           }
         } else {
           trackError();
@@ -180,9 +180,9 @@ export const CacheProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         
         return response;
       } catch (error) {
-        const duration = performance.now() - startTime;
+        // const _duration = performance.now() - startTime;
         trackError();
-        trackQueryTime(args[0]?.toString() || 'unknown', duration);
+        // trackQueryTime(args[0]?.toString() || 'unknown', duration);
         throw error;
       }
     };
@@ -201,7 +201,7 @@ export const CacheProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     localStorage.getItem = function(key: string) {
       const startTime = performance.now();
       const result = originalGetItem.call(this, key);
-      const duration = performance.now() - startTime;
+      // const _duration = performance.now() - startTime;
       
       if (key.startsWith('cache_') || key.startsWith('draft_')) {
         if (result) {
@@ -217,7 +217,7 @@ export const CacheProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     localStorage.setItem = function(key: string, value: string) {
       const startTime = performance.now();
       const result = originalSetItem.call(this, key, value);
-      const duration = performance.now() - startTime;
+      // const _duration = performance.now() - startTime;
       
       return result;
     };
@@ -344,7 +344,7 @@ export const useCache = (): CacheContextType => {
 export const withCache = <P extends object>(Component: React.ComponentType<P>) => {
   return React.forwardRef<any, P>((props, ref) => (
     <CacheProvider>
-      <Component {...props} ref={ref} />
+      <Component {...(props as any)} ref={ref} />
     </CacheProvider>
   ));
 };

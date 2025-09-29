@@ -241,7 +241,7 @@ export const useSuccessConfirmation = () => {
       label: string;
       action: () => void;
       variant?: 'primary' | 'secondary' | 'danger';
-    }>;
+    }> | undefined;
   }>({
     show: false,
     title: '',

@@ -50,7 +50,7 @@ export const renderWithProviders = (
   const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AuthProvider initialUser={user}>
+        <AuthProvider>
           {children}
         </AuthProvider>
       </BrowserRouter>

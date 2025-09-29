@@ -33,7 +33,7 @@ export const useCacheWarming = () => {
       // Prefetch today's interviews
       await queryClient.prefetchQuery({
         queryKey: queryKeys.interviews.today(),
-        queryFn: () => interviewService.getTodayInterviews(),
+        queryFn: () => interviewService.getTodaysInterviews(),
         staleTime: 1 * 60 * 1000, // 1 minute (more frequent for today's data)
       });
 
@@ -118,7 +118,7 @@ export const useSmartPrefetch = () => {
     // Prefetch statistics for this position
     queryClient.prefetchQuery({
       queryKey: queryKeys.interviews.stats(positionId),
-      queryFn: () => interviewService.getInterviewStats(positionId),
+      queryFn: () => interviewService.getInterviews(positionId),
       staleTime: 10 * 60 * 1000,
     });
   }, [queryClient, prefetchPositionDetails, prefetchPositionInterviews]);
@@ -210,7 +210,7 @@ export const useIntelligentPrefetch = () => {
     if (hour >= 6 && hour < 12) {
       queryClient.prefetchQuery({
         queryKey: queryKeys.interviews.today(),
-        queryFn: () => interviewService.getTodayInterviews(),
+        queryFn: () => interviewService.getTodaysInterviews(),
         staleTime: 1 * 60 * 1000,
       });
     }

@@ -323,7 +323,7 @@ export const useQueryCacheMetrics = () => {
 
     const activeQueries = queries.filter(query => query.getObserversCount() > 0);
     const staleQueries = queries.filter(query => query.isStale());
-    const fetchingQueries = queries.filter(query => query.state.isFetching);
+    const fetchingQueries = queries.filter(query => (query.state as any).isFetching);
     const errorQueries = queries.filter(query => query.state.status === 'error');
 
     // Estimate cache size (rough approximation)
@@ -367,7 +367,7 @@ export const useQueryCacheMetrics = () => {
     return queries.map(query => ({
       queryKey: query.queryKey,
       status: query.state.status,
-      isFetching: query.state.isFetching,
+      isFetching: (query.state as any).isFetching,
       isStale: query.isStale(),
       observersCount: query.getObserversCount(),
       dataUpdatedAt: query.state.dataUpdatedAt,

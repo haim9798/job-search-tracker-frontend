@@ -6,7 +6,7 @@ export interface PerformanceEntry {
   startTime: number;
   duration: number;
   type: 'query' | 'mutation' | 'render' | 'navigation' | 'cache' | 'network';
-  metadata?: Record<string, any>;
+  metadata: Record<string, any>;
 }
 
 export interface PerformanceMetrics {
@@ -33,7 +33,7 @@ export class PerformanceMonitor {
         startTime,
         duration,
         type,
-        metadata,
+        metadata: metadata || {},
       });
     };
   }
@@ -83,7 +83,7 @@ export class PerformanceMonitor {
       if (!acc[entry.type]) {
         acc[entry.type] = [];
       }
-      acc[entry.type].push(entry);
+      acc[entry.type]!.push(entry);
       return acc;
     }, {} as Record<string, PerformanceEntry[]>);
 
@@ -126,9 +126,9 @@ export class PerformanceMonitor {
     const byType: Record<string, { count: number; average: number; total: number }> = {};
     Object.keys(metrics.counts).forEach(type => {
       byType[type] = {
-        count: metrics.counts[type],
-        average: metrics.averages[type],
-        total: metrics.totals[type],
+        count: metrics.counts[type] || 0,
+        average: metrics.averages[type] || 0,
+        total: metrics.totals[type] || 0,
       };
     });
 
@@ -182,8 +182,8 @@ export class PerformanceMonitor {
             duration: lastEntry.startTime,
             type: 'render',
             metadata: {
-              element: lastEntry.element?.tagName,
-              url: lastEntry.url,
+              element: (lastEntry as any).element?.tagName,
+              url: (lastEntry as any).url,
             },
           });
         });
@@ -201,7 +201,7 @@ export class PerformanceMonitor {
             this.addEntry({
               name: 'FID',
               startTime: entry.startTime,
-              duration: entry.processingStart - entry.startTime,
+              duration: (entry as any).processingStart - entry.startTime,
               type: 'render',
               metadata: {
                 inputType: (entry as any).name,
@@ -281,22 +281,24 @@ export class PerformanceMonitor {
         }
 
         // DOM processing time
-        if (entry.domComplete > entry.domLoading) {
+        if (entry.domComplete > (entry as any).domLoading) {
           this.addEntry({
             name: 'DOM Processing',
-            startTime: entry.domLoading,
-            duration: entry.domComplete - entry.domLoading,
+            startTime: (entry as any).domLoading,
+            duration: entry.domComplete - (entry as any).domLoading,
             type: 'navigation',
+            metadata: {},
           });
         }
 
         // Page load time
-        if (entry.loadEventEnd > entry.navigationStart) {
+        if (entry.loadEventEnd > (entry as any).navigationStart) {
           this.addEntry({
             name: 'Page Load',
-            startTime: entry.navigationStart,
-            duration: entry.loadEventEnd - entry.navigationStart,
+            startTime: (entry as any).navigationStart,
+            duration: entry.loadEventEnd - (entry as any).navigationStart,
             type: 'navigation',
+            metadata: {},
           });
         }
       });

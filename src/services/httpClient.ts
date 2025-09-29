@@ -47,7 +47,7 @@ const createHttpClient = (): AxiosInstance => {
       }
       
       // Add performance tracking metadata
-      config.metadata = {
+      (config as any).metadata = {
         startTime: performance.now(),
         performanceId: `${config.method?.toUpperCase()}_${config.url}`,
       };
@@ -75,7 +75,7 @@ const createHttpClient = (): AxiosInstance => {
       // Track successful request performance
       const config = response.config as any;
       if (config.metadata?.startTime && config.metadata?.performanceId) {
-        const duration = performance.now() - config.metadata.startTime;
+        const duration = performance.now() - (config as any).metadata.startTime;
         
         PerformanceMonitor.addEntry({
           name: config.metadata.performanceId,
@@ -108,7 +108,7 @@ const createHttpClient = (): AxiosInstance => {
 
       // Track failed request performance
       if (originalRequest?.metadata?.startTime && originalRequest?.metadata?.performanceId) {
-        const duration = performance.now() - originalRequest.metadata.startTime;
+        const duration = performance.now() - (originalRequest as any).metadata.startTime;
         
         PerformanceMonitor.addEntry({
           name: originalRequest.metadata.performanceId,

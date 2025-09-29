@@ -13,17 +13,12 @@ interface AppProviderProps {
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
-  console.log('🏗️ AppProvider initializing...');
   
   return (
     <ThemeProvider>
-      {console.log('🎨 ThemeProvider loaded')}
       <QueryProvider>
-        {console.log('📊 QueryProvider loaded')}
         <CacheProvider>
-          {console.log('💾 CacheProvider loaded')}
           <AuthProvider>
-            {console.log('🔐 AuthProvider loaded')}
             {children}
             {/* Performance monitoring */}
             <PerformanceMonitor />

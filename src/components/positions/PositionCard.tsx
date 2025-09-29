@@ -7,7 +7,9 @@ import {
   PlusIcon,
   EllipsisVerticalIcon,
   ClockIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  CheckCircleIcon,
+  XCircleIcon
 } from '@heroicons/react/24/outline';
 import { Position, Interview, InterviewType, InterviewOutcome } from '../../types';
 import { StatusBadge, Button } from '../ui';
@@ -19,7 +21,7 @@ interface PositionCardProps {
   onDelete: (id: string) => void;
   onAddInterview: (positionId: string) => void;
   onViewDetails: (id: string) => void;
-  onQuickUpdateInterview?: (interviewId: string, field: string, value: any) => void;
+  onQuickUpdateInterview?: ((interviewId: string, field: string, value: any) => void) | undefined;
   className?: string;
 }
 
@@ -51,7 +53,10 @@ const getInterviewOutcomeColor = (outcome: InterviewOutcome) => {
   }
 };
 
-const InterviewPreview: React.FC<{ interview: Interview }> = ({ interview }) => {
+const InterviewPreview: React.FC<{ 
+  interview: Interview; 
+  onQuickUpdate?: ((interviewId: string, field: string, value: any) => void) | undefined;
+}> = ({ interview, onQuickUpdate }) => {
   const scheduledDate = parseISO(interview.scheduled_date);
   const isOverdue = isPast(scheduledDate) && interview.outcome === 'pending';
   const isTodayInterview = isToday(scheduledDate);
@@ -86,12 +91,44 @@ const InterviewPreview: React.FC<{ interview: Interview }> = ({ interview }) => 
           )}
         </div>
       </div>
-      {isOverdue && (
-        <span className="text-xs font-medium text-red-600">Overdue</span>
-      )}
-      {isTodayInterview && (
-        <span className="text-xs font-medium text-blue-600">Today</span>
-      )}
+      <div className="flex items-center space-x-2">
+        {isOverdue && (
+          <span className="text-xs font-medium text-red-600">Overdue</span>
+        )}
+        {isTodayInterview && (
+          <span className="text-xs font-medium text-blue-600">Today</span>
+        )}
+        
+        {/* Quick outcome buttons for pending interviews */}
+        {interview.outcome === 'pending' && onQuickUpdate && (
+          <div className="flex items-center space-x-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onQuickUpdate(interview.id, 'outcome', 'passed');
+              }}
+              className="p-1 text-green-600 hover:text-green-700"
+              title="Mark as Passed"
+            >
+              <CheckCircleIcon className="h-3 w-3" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onQuickUpdate(interview.id, 'outcome', 'failed');
+              }}
+              className="p-1 text-red-600 hover:text-red-700"
+              title="Mark as Failed"
+            >
+              <XCircleIcon className="h-3 w-3" />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -261,11 +298,8 @@ export const PositionCard: React.FC<PositionCardProps> = ({
               {upcomingInterviews.map((interview) => (
                 <InterviewPreview 
                   key={interview.id} 
-                  interviews={[interview]} 
-                  positionId={position.id}
-                  onAddInterview={onAddInterview}
+                  interview={interview} 
                   onQuickUpdate={onQuickUpdateInterview}
-                  showAddButton={false}
                 />
               ))}
               {totalInterviews > 2 && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { toast, Toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { ApiError } from '../types';
 import { getErrorMessage } from './errorMessages';
 
@@ -32,9 +32,9 @@ export const notifications = {
         color: '#fff',
         ...options?.style,
       },
-      className: options?.className,
-      icon: options?.icon,
-      id: options?.id,
+      className: options?.className || undefined,
+      icon: options?.icon || undefined,
+      id: options?.id || undefined,
     });
   },
 
@@ -59,9 +59,9 @@ export const notifications = {
         color: '#fff',
         ...options?.style,
       },
-      className: options?.className,
-      icon: options?.icon,
-      id: options?.id,
+      className: options?.className || undefined,
+      icon: options?.icon || undefined,
+      id: options?.id || undefined,
     });
   },
 
@@ -76,7 +76,7 @@ export const notifications = {
         ...options?.style,
       },
       className: options?.className,
-      icon: options?.icon || '⚠️',
+      icon: (options?.icon || '⚠️') as any,
       id: options?.id,
     });
   },
@@ -92,7 +92,7 @@ export const notifications = {
         ...options?.style,
       },
       className: options?.className,
-      icon: options?.icon || 'ℹ️',
+      icon: (options?.icon || 'ℹ️') as any,
       id: options?.id,
     });
   },
@@ -123,9 +123,9 @@ export const notifications = {
   ) => {
     return toast.promise(promise, messages, {
       position: options?.position || 'top-right',
-      style: options?.style,
-      className: options?.className,
-      id: options?.id,
+      style: options?.style || undefined,
+      className: options?.className || undefined,
+      id: options?.id || undefined,
     });
   },
 
@@ -134,10 +134,10 @@ export const notifications = {
     content: React.ReactNode,
     options?: NotificationOptions
   ) => {
-    return toast.custom(content, {
+    return toast.custom(content as any, {
       duration: options?.duration || 4000,
       position: options?.position || 'top-right',
-      id: options?.id,
+      id: options?.id || undefined,
     });
   },
 
@@ -226,7 +226,7 @@ export const operationNotifications = {
     });
   },
 
-  syncError: (error: any, options?: NotificationOptions) => {
+  syncError: (_error: any, options?: NotificationOptions) => {
     notifications.dismiss('sync-status');
     return notifications.error('Sync failed. Will retry automatically.', options);
   },
@@ -326,7 +326,7 @@ export const useNotifications = () => {
             : messages.error;
           notifications.error(errorMessage);
         } else {
-          notifications.error(error);
+          notifications.error(error as any);
         }
         
         throw error;
@@ -344,7 +344,7 @@ export const useNotifications = () => {
       options?: NotificationOptions
     ) => {
       return notifications.custom(
-        (t) => (
+        (t: any) => (
           <ActionableToast
             message={message}
             actions={actions}

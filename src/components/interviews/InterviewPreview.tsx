@@ -17,7 +17,8 @@ import { StatusBadge } from '../ui/StatusBadge';
 import InterviewTooltip from './InterviewTooltip';
 
 interface InterviewPreviewProps {
-  interviews: Interview[];
+  interview?: Interview;
+  interviews?: Interview[];
   positionId: string;
   onAddInterview: (positionId: string) => void;
   onInterviewClick?: (interview: Interview) => void;
@@ -27,6 +28,7 @@ interface InterviewPreviewProps {
 }
 
 const InterviewPreview: React.FC<InterviewPreviewProps> = ({
+  interview,
   interviews,
   positionId,
   onAddInterview,
@@ -35,6 +37,8 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   maxVisible = 3,
   showAddButton = true,
 }) => {
+  // Handle both single interview and multiple interviews
+  const interviewList = interview ? [interview] : (interviews || []);
   const getPlaceIcon = (place: InterviewPlace, className = "h-3 w-3") => {
     switch (place) {
       case InterviewPlace.VIDEO:
@@ -78,7 +82,7 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   };
 
   // Sort interviews by date (upcoming first, then by scheduled date)
-  const sortedInterviews = [...interviews].sort((a, b) => {
+  const sortedInterviews = [...interviewList].sort((a, b) => {
     const aDate = new Date(a.scheduled_date);
     const bDate = new Date(b.scheduled_date);
 
@@ -92,7 +96,7 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   });
 
   const visibleInterviews = sortedInterviews.slice(0, maxVisible);
-  const remainingCount = Math.max(0, interviews.length - maxVisible);
+  const remainingCount = Math.max(0, interviewList.length - maxVisible);
 
   // Get next upcoming interview
   const nextInterview = sortedInterviews.find(
@@ -101,12 +105,12 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   );
 
   // Count overdue interviews
-  const overdueCount = interviews.filter(
+  const overdueCount = interviewList.filter(
     interview => interview.outcome === InterviewOutcome.PENDING && 
     isPast(new Date(interview.scheduled_date))
   ).length;
 
-  if (interviews.length === 0) {
+  if (interviewList.length === 0) {
     return (
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-500">No interviews scheduled</span>
@@ -130,7 +134,7 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center space-x-3">
           <span className="text-gray-600">
-            {interviews.length} interview{interviews.length !== 1 ? 's' : ''}
+            {interviewList.length} interview{interviewList.length !== 1 ? 's' : ''}
           </span>
           
           {nextInterview && (

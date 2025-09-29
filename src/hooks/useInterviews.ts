@@ -177,13 +177,13 @@ export const useUpdateInterview = () => {
       }
       toast.error('Failed to update interview');
     },
-    onSuccess: async (data, { data: updateData }, context) => {
+    onSuccess: async (_data, { data: updateData }, _context) => {
       toast.success('Interview updated successfully');
       
       // Auto-reject position if interview is marked as failed
-      if (updateData.outcome === InterviewOutcome.FAILED && context?.positionId) {
+      if (updateData.outcome === InterviewOutcome.FAILED && _context?.positionId) {
         try {
-          await positionService.updatePositionStatus(context.positionId, PositionStatus.REJECTED);
+          await positionService.updatePositionStatus(_context.positionId, PositionStatus.REJECTED);
           toast.success('Position automatically marked as rejected due to failed interview');
         } catch (error) {
           console.error('Failed to auto-reject position:', error);
@@ -221,7 +221,7 @@ export const useUpdateInterviewField = () => {
       }
       // Don't show toast for field updates to avoid spam
     },
-    onSuccess: async (data, { field, value }, context) => {
+    onSuccess: async (_data, { field, value }, context) => {
       // Auto-reject position if interview outcome is set to failed
       if (field === 'outcome' && value === InterviewOutcome.FAILED && context?.positionId) {
         try {

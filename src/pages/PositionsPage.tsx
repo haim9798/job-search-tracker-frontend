@@ -53,7 +53,7 @@ export const PositionsPage: React.FC = () => {
     setShowInterviewForm(true);
   };
 
-  const handleInterviewSubmit = async (data: CreateInterviewData) => {
+  const handleInterviewSubmit = async (data: CreateInterviewData | any) => {
     try {
       await createInterviewMutation.mutateAsync(data);
       setShowInterviewForm(false);

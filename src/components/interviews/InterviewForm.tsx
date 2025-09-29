@@ -16,7 +16,7 @@ import { TextArea } from '../ui/TextArea';
 import { Select } from '../ui/Select';
 
 interface InterviewFormProps {
-  interview?: Interview;
+  interview?: Interview | undefined;
   positionId: string;
   onSubmit: (data: CreateInterviewData | UpdateInterviewData) => void;
   onCancel: () => void;

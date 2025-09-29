@@ -329,11 +329,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     restoreSession,
   };
 
-  console.log('🔐 AuthProvider rendering with context value:', contextValue);
   
   return (
     <AuthContext.Provider value={contextValue}>
-      {console.log('🔐 AuthProvider children rendering')}
       {children}
     </AuthContext.Provider>
   );

@@ -214,7 +214,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                       key={index}
                       variant="ghost"
                       size="sm"
-                      onClick={() => handlePresetSelect(preset)}
+                      onClick={() => handlePresetSelect(preset as any)}
                       className="justify-start text-left h-auto py-2"
                     >
                       {preset.label}
@@ -284,8 +284,8 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                   size="sm"
                   onClick={handleApply}
                   disabled={
-                    tempRange.from && tempRange.to && 
-                    new Date(tempRange.from) > new Date(tempRange.to)
+                    !!(tempRange.from && tempRange.to && 
+                    new Date(tempRange.from) > new Date(tempRange.to))
                   }
                 >
                   Apply
