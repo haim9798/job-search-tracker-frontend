@@ -26,7 +26,7 @@ export const PositionDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: position, isLoading, error } = usePosition(id!);
+  const { data: position, isLoading, error, refetch: refetchPosition } = usePosition(id!);
   const updatePositionMutation = useUpdatePosition();
   const deletePositionMutation = useDeletePosition();
   const updateStatusMutation = useUpdatePositionStatus();
@@ -88,6 +88,8 @@ export const PositionDetailsPage: React.FC = () => {
         setShowInterviewForm(false);
         toast.success('Interview scheduled successfully!');
       }
+      // Force refetch of position data to update the UI
+      await refetchPosition();
     } catch (error) {
       toast.error(editingInterview ? 'Failed to update interview' : 'Failed to schedule interview');
       console.error('Error with interview:', error);
@@ -104,6 +106,8 @@ export const PositionDetailsPage: React.FC = () => {
     try {
       await deleteInterviewMutation.mutateAsync(interviewId);
       toast.success('Interview deleted successfully!');
+      // Force refetch of position data to update the UI
+      await refetchPosition();
     } catch (error) {
       console.error('🔍 DEBUG: Error deleting interview:', error);
       toast.error('Failed to delete interview');
