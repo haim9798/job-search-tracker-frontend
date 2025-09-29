@@ -15,6 +15,11 @@ import {
 import { PositionStatus, UpdatePositionData } from '../types';
 
 export const PositionDetailsPage: React.FC = () => {
+  console.log('🚀 PositionDetailsPage loaded!');
+  // Test if component loads at all - remove this after testing
+  if (typeof window !== 'undefined') {
+    setTimeout(() => alert('PositionDetailsPage component loaded successfully!'), 1000);
+  }
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
