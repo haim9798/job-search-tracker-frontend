@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ChartBarIcon,
   TableCellsIcon,
   BuildingOfficeIcon,
   Cog6ToothIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '../ui/Button';
 
@@ -48,6 +50,7 @@ export const ResponsiveStatisticsLayout: React.FC<ResponsiveStatisticsLayoutProp
   onExport,
   isLoading = false,
 }) => {
+  const navigate = useNavigate();
   const [activeView, setActiveView] = useState<ViewMode>('overview');
   const [showFilters, setShowFilters] = useState(false);
 
@@ -58,6 +61,13 @@ export const ResponsiveStatisticsLayout: React.FC<ResponsiveStatisticsLayoutProp
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold text-gray-900">Statistics</h1>
           <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/dashboard')}
+            >
+              <HomeIcon className="h-4 w-4" />
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -122,6 +132,13 @@ export const ResponsiveStatisticsLayout: React.FC<ResponsiveStatisticsLayoutProp
               </p>
             </div>
             <div className="flex items-center space-x-3">
+              <Button
+                variant="ghost"
+                onClick={() => navigate('/dashboard')}
+              >
+                <HomeIcon className="h-4 w-4 mr-2" />
+                Dashboard
+              </Button>
               {onExport && (
                 <Button
                   variant="secondary"

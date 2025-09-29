@@ -88,7 +88,7 @@ export const KeyMetricsCards: React.FC<KeyMetricsCardsProps> = ({
   successRates,
   isLoading,
 }) => {
-  const formatPercentage = (value: number) => `${Math.round(value * 100)}%`;
+  const formatPercentage = (value: number) => `${Math.round(value)}%`;
   const formatDecimal = (value: number) => value.toFixed(1);
 
   const metrics = [
