@@ -83,12 +83,10 @@ export const PositionDetailsPage: React.FC = () => {
           id: editingInterview.id, 
           data: data as UpdateInterviewData 
         });
-        setEditingInterview(null);
         toast.success('Interview updated successfully!');
       } else {
         // Create new interview
         await createInterviewMutation.mutateAsync(data as CreateInterviewData);
-        setShowInterviewForm(false);
         toast.success('Interview scheduled successfully!');
       }
       // Force refetch of position data to update the UI
@@ -227,9 +225,10 @@ export const PositionDetailsPage: React.FC = () => {
                 setEditingInterview(null);
               }}
               onSuccess={() => {
-                // Reset form state after successful submission
-                setFormKey(prev => prev + 1);
+                // Close modal and reset form state after successful submission
+                setShowInterviewForm(false);
                 setEditingInterview(null);
+                setFormKey(prev => prev + 1);
               }}
               loading={editingInterview ? updateInterviewMutation.isPending : createInterviewMutation.isPending}
               mode={editingInterview ? "edit" : "create"}
