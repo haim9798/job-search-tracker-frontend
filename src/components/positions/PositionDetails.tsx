@@ -392,10 +392,7 @@ export const PositionDetails: React.FC<PositionDetailsProps> = ({
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => {
-                          console.log('🔍 DEBUG: Delete button clicked for interview:', interview.id);
-                          onDeleteInterview(interview.id);
-                        }}
+                        onClick={() => onDeleteInterview(interview.id)}
                         className="p-1 text-red-600 hover:text-red-700"
                       >
                         <TrashIcon className="h-4 w-4" />

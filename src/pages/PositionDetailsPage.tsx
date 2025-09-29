@@ -18,11 +18,6 @@ import { useCreateInterview, useUpdateInterview, useDeleteInterview } from '../h
 import { PositionStatus, UpdatePositionData, CreateInterviewData, UpdateInterviewData, Interview } from '../types';
 
 export const PositionDetailsPage: React.FC = () => {
-  console.log('🚀 PositionDetailsPage loaded!');
-  // Test if component loads at all - remove this after testing
-  if (typeof window !== 'undefined') {
-    setTimeout(() => alert('PositionDetailsPage component loaded successfully!'), 1000);
-  }
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -68,7 +63,6 @@ export const PositionDetailsPage: React.FC = () => {
   };
 
   const handleAddInterview = (positionId: string) => {
-    console.log('🔍 DEBUG: handleAddInterview called with positionId:', positionId);
     // Reset form state and open modal
     setEditingInterview(null);
     setFormKey(prev => prev + 1); // Force form reset
@@ -104,14 +98,13 @@ export const PositionDetailsPage: React.FC = () => {
   };
 
   const handleDeleteInterview = async (interviewId: string) => {
-    console.log('🔍 DEBUG: Attempting to delete interview with ID:', interviewId);
     try {
       await deleteInterviewMutation.mutateAsync(interviewId);
       toast.success('Interview deleted successfully!');
       // Force refetch of position data to update the UI
       await refetchPosition();
     } catch (error) {
-      console.error('🔍 DEBUG: Error deleting interview:', error);
+      console.error('Error deleting interview:', error);
       toast.error('Failed to delete interview');
     }
   };

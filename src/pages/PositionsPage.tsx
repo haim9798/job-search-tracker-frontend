@@ -47,7 +47,6 @@ export const PositionsPage: React.FC = () => {
   };
 
   const handleAddInterview = (positionId: string) => {
-    console.log('🔍 DEBUG: PositionsPage handleAddInterview called with positionId:', positionId);
     setSelectedPositionId(positionId);
     setFormKey(prev => prev + 1); // Force form reset
     setShowInterviewForm(true);
