@@ -237,22 +237,20 @@ export const PositionCard: React.FC<PositionCardProps> = ({
                 {totalInterviews === 1 ? '1 interview' : `${totalInterviews} interviews`}
               </span>
             </div>
-            {totalInterviews === 0 && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddInterview();
-                }}
-                aria-label={`Add first interview for ${position.title}`}
-                className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm"
-              >
-                <PlusIcon className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">Add Interview</span>
-                <span className="sm:hidden">Add</span>
-              </Button>
-            )}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddInterview();
+              }}
+              aria-label={`Add interview for ${position.title}`}
+              className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm"
+            >
+              <PlusIcon className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Add Interview</span>
+              <span className="sm:hidden">Add</span>
+            </Button>
           </div>
 
           {/* Interview Previews */}
