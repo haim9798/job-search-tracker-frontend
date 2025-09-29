@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { interviewService } from '../services';
+import { interviewService, positionService } from '../services';
 import { queryKeys, invalidateQueries, optimisticUpdates, cacheConfigs } from '../lib/queryClient';
 import { useCacheInvalidation } from './useCacheInvalidation';
 import { CacheManager } from '../utils/cacheManager';
@@ -9,6 +9,7 @@ import {
   CreateInterviewData,
   UpdateInterviewData,
   InterviewOutcome,
+  PositionStatus,
 } from '../types';
 
 // Query hooks
@@ -176,8 +177,18 @@ export const useUpdateInterview = () => {
       }
       toast.error('Failed to update interview');
     },
-    onSuccess: () => {
+    onSuccess: async (data, { data: updateData }, context) => {
       toast.success('Interview updated successfully');
+      
+      // Auto-reject position if interview is marked as failed
+      if (updateData.outcome === InterviewOutcome.FAILED && context?.positionId) {
+        try {
+          await positionService.updatePositionStatus(context.positionId, PositionStatus.REJECTED);
+          toast.success('Position automatically marked as rejected due to failed interview');
+        } catch (error) {
+          console.error('Failed to auto-reject position:', error);
+        }
+      }
     },
     onSettled: (_data, _error, { id }, context) => {
       // Always refetch after mutation
@@ -209,6 +220,17 @@ export const useUpdateInterviewField = () => {
         queryClient.setQueryData(queryKeys.interviews.detail(id), context.previousInterview);
       }
       // Don't show toast for field updates to avoid spam
+    },
+    onSuccess: async (data, { field, value }, context) => {
+      // Auto-reject position if interview outcome is set to failed
+      if (field === 'outcome' && value === InterviewOutcome.FAILED && context?.positionId) {
+        try {
+          await positionService.updatePositionStatus(context.positionId, PositionStatus.REJECTED);
+          toast.success('Position automatically marked as rejected due to failed interview');
+        } catch (error) {
+          console.error('Failed to auto-reject position:', error);
+        }
+      }
     },
     onSettled: (_data, _error, { id }, context) => {
       invalidateQueries.interview(id, context?.positionId);

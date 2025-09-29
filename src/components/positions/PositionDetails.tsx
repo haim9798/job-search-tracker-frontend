@@ -343,7 +343,7 @@ export const PositionDetails: React.FC<PositionDetailsProps> = ({
         {totalInterviews > 0 ? (
           <div className="space-y-4">
             {position.interviews
-              ?.sort((a, b) => new Date(b.scheduled_date).getTime() - new Date(a.scheduled_date).getTime())
+              ?.sort((a, b) => new Date(a.scheduled_date).getTime() - new Date(b.scheduled_date).getTime())
               .map((interview) => (
                 <div
                   key={interview.id}
