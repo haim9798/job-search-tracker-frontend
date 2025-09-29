@@ -91,7 +91,7 @@ export const useCreateInterview = () => {
   const { invalidateByMutation } = useCacheInvalidation();
 
   return useMutation({
-    mutationFn: (data: CreateInterviewData) => interviewService.createInterview(data),
+    mutationFn: (data: CreateInterviewData) => interviewService.createInterview(data.position_id, data),
     onMutate: async (newInterview) => {
       // Cancel outgoing refetches
       await queryClient.cancelQueries({ 

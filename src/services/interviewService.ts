@@ -26,8 +26,8 @@ class InterviewService {
   /**
    * Create a new interview
    */
-  async createInterview(data: CreateInterviewData): Promise<Interview> {
-    return apiRequest.post<Interview>('/api/v1/interviews', data);
+  async createInterview(positionId: string, data: CreateInterviewData): Promise<Interview> {
+    return apiRequest.post<Interview>(`/api/v1/positions/${positionId}/interviews`, data);
   }
 
   /**
