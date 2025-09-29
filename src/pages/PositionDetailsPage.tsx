@@ -100,12 +100,13 @@ export const PositionDetailsPage: React.FC = () => {
   };
 
   const handleDeleteInterview = async (interviewId: string) => {
+    console.log('🔍 DEBUG: Attempting to delete interview with ID:', interviewId);
     try {
       await deleteInterviewMutation.mutateAsync(interviewId);
       toast.success('Interview deleted successfully!');
     } catch (error) {
+      console.error('🔍 DEBUG: Error deleting interview:', error);
       toast.error('Failed to delete interview');
-      console.error('Error deleting interview:', error);
     }
   };
 
