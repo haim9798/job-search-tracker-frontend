@@ -89,6 +89,20 @@ export const PositionsPage: React.FC = () => {
                   Manage your job applications and track your progress
                 </p>
               </div>
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  Dashboard
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => navigate('/statistics')}
+                >
+                  View Statistics
+                </Button>
+              </div>
             </div>
           </div>
         </div>

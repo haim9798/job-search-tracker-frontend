@@ -102,13 +102,21 @@ export const DashboardPage: React.FC = () => {
                   Welcome back, {user?.first_name} {user?.last_name}!
                 </p>
               </div>
-              <Button
-                variant="secondary"
-                onClick={handleLogout}
-                loading={authLoading}
-              >
-                Logout
-              </Button>
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="primary"
+                  onClick={() => navigate('/statistics')}
+                >
+                  View Statistics
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={handleLogout}
+                  loading={authLoading}
+                >
+                  Logout
+                </Button>
+              </div>
             </div>
           </div>
         </div>
