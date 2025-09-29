@@ -13,7 +13,7 @@ import {
   CheckIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { Position, PositionStatus, UpdatePositionData } from '../../types';
+import { Position, PositionStatus, UpdatePositionData, Interview } from '../../types';
 import { StatusBadge, Button, Input, TextArea, Select, Modal } from '../ui';
 import { cn } from '../../utils';
 
@@ -23,6 +23,8 @@ interface PositionDetailsProps {
   onDelete: (id: string) => void;
   onStatusUpdate: (id: string, status: PositionStatus) => void;
   onAddInterview: (positionId: string) => void;
+  onEditInterview?: (interview: Interview) => void;
+  onDeleteInterview?: (interviewId: string) => void;
   loading?: boolean;
   className?: string;
 }
@@ -162,6 +164,8 @@ export const PositionDetails: React.FC<PositionDetailsProps> = ({
   onDelete,
   onStatusUpdate,
   onAddInterview,
+  onEditInterview,
+  onDeleteInterview,
   loading = false,
   className,
 }) => {
@@ -343,7 +347,7 @@ export const PositionDetails: React.FC<PositionDetailsProps> = ({
               .map((interview) => (
                 <div
                   key={interview.id}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
                 >
                   <div className="flex-1">
                     <div className="flex items-center space-x-3">
@@ -372,7 +376,29 @@ export const PositionDetails: React.FC<PositionDetailsProps> = ({
                       </div>
                     </div>
                   </div>
-                  <StatusBadge status={interview.outcome} size="sm" />
+                  <div className="flex items-center space-x-2">
+                    <StatusBadge status={interview.outcome} size="sm" />
+                    {onEditInterview && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onEditInterview(interview)}
+                        className="p-1"
+                      >
+                        <PencilIcon className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {onDeleteInterview && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onDeleteInterview(interview.id)}
+                        className="p-1 text-red-600 hover:text-red-700"
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
           </div>

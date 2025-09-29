@@ -14,8 +14,8 @@ import {
   useDeletePosition, 
   useUpdatePositionStatus 
 } from '../hooks/usePositions';
-import { useCreateInterview } from '../hooks/useInterviews';
-import { PositionStatus, UpdatePositionData, CreateInterviewData } from '../types';
+import { useCreateInterview, useUpdateInterview, useDeleteInterview } from '../hooks/useInterviews';
+import { PositionStatus, UpdatePositionData, CreateInterviewData, UpdateInterviewData, Interview } from '../types';
 
 export const PositionDetailsPage: React.FC = () => {
   console.log('🚀 PositionDetailsPage loaded!');
@@ -31,9 +31,12 @@ export const PositionDetailsPage: React.FC = () => {
   const deletePositionMutation = useDeletePosition();
   const updateStatusMutation = useUpdatePositionStatus();
   const createInterviewMutation = useCreateInterview();
+  const updateInterviewMutation = useUpdateInterview();
+  const deleteInterviewMutation = useDeleteInterview();
 
   // Modal state
   const [showInterviewForm, setShowInterviewForm] = useState(false);
+  const [editingInterview, setEditingInterview] = useState<Interview | null>(null);
 
   const handleEdit = async (positionId: string, data: UpdatePositionData) => {
     try {
@@ -69,14 +72,40 @@ export const PositionDetailsPage: React.FC = () => {
     setShowInterviewForm(true);
   };
 
-  const handleInterviewSubmit = async (data: CreateInterviewData) => {
+  const handleInterviewSubmit = async (data: CreateInterviewData | UpdateInterviewData) => {
     try {
-      await createInterviewMutation.mutateAsync(data);
-      setShowInterviewForm(false);
-      toast.success('Interview scheduled successfully!');
+      if (editingInterview) {
+        // Update existing interview
+        await updateInterviewMutation.mutateAsync({ 
+          id: editingInterview.id, 
+          data: data as UpdateInterviewData 
+        });
+        setEditingInterview(null);
+        toast.success('Interview updated successfully!');
+      } else {
+        // Create new interview
+        await createInterviewMutation.mutateAsync(data as CreateInterviewData);
+        setShowInterviewForm(false);
+        toast.success('Interview scheduled successfully!');
+      }
     } catch (error) {
-      toast.error('Failed to schedule interview');
-      console.error('Error creating interview:', error);
+      toast.error(editingInterview ? 'Failed to update interview' : 'Failed to schedule interview');
+      console.error('Error with interview:', error);
+    }
+  };
+
+  const handleEditInterview = (interview: Interview) => {
+    setEditingInterview(interview);
+    setShowInterviewForm(true);
+  };
+
+  const handleDeleteInterview = async (interviewId: string) => {
+    try {
+      await deleteInterviewMutation.mutateAsync(interviewId);
+      toast.success('Interview deleted successfully!');
+    } catch (error) {
+      toast.error('Failed to delete interview');
+      console.error('Error deleting interview:', error);
     }
   };
 
@@ -161,6 +190,8 @@ export const PositionDetailsPage: React.FC = () => {
               onDelete={handleDelete}
               onStatusUpdate={handleStatusUpdate}
               onAddInterview={handleAddInterview}
+              onEditInterview={handleEditInterview}
+              onDeleteInterview={handleDeleteInterview}
               loading={isLoading}
             />
           )}
@@ -170,16 +201,23 @@ export const PositionDetailsPage: React.FC = () => {
         {showInterviewForm && id && (
           <Modal
             isOpen={showInterviewForm}
-            onClose={() => setShowInterviewForm(false)}
-            title="Schedule New Interview"
+            onClose={() => {
+              setShowInterviewForm(false);
+              setEditingInterview(null);
+            }}
+            title={editingInterview ? "Edit Interview" : "Schedule New Interview"}
             size="lg"
           >
             <InterviewForm
+              interview={editingInterview || undefined}
               positionId={id}
               onSubmit={handleInterviewSubmit}
-              onCancel={() => setShowInterviewForm(false)}
-              loading={createInterviewMutation.isPending}
-              mode="create"
+              onCancel={() => {
+                setShowInterviewForm(false);
+                setEditingInterview(null);
+              }}
+              loading={editingInterview ? updateInterviewMutation.isPending : createInterviewMutation.isPending}
+              mode={editingInterview ? "edit" : "create"}
             />
           </Modal>
         )}
